@@ -1,0 +1,12 @@
+# Basic Security Hardening
+
+# Disable directory listing
+Options -Indexes
+
+<IfModule mod_headers.c>
+    # Prevent MIME-type sniffing
+    Header always set X-Content-Type-Options "nosniff"
+    
+    # Prevent clickjacking
+    Header always set X-Frame-Options "SAMEORIGIN"
+</IfModule>

@@ -1,0 +1,14 @@
+# Secrets / local configuration
+.env
+config/weather.php
+database.php
+
+# Logs, locks, runtime state
+*.log
+*.lock
+relay_state.txt
+
+# Cache and Python artifacts
+cache/
+__pycache__/
+*.pyc

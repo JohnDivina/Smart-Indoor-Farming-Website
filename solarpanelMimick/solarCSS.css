@@ -1,0 +1,149 @@
+
+    body {
+      margin: 0;
+      font-family: 'Libre Franklin', sans-serif;
+      background-color: #ffffff;
+    }
+
+    .header {
+      background-color: #ffffff;
+      border-top: 20px solid #1e6031;
+      font-weight: bold;
+      font-size: 22px;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    .header i {
+      font-size: 32px;
+      margin-right: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      padding: 3px;
+      border-radius: 2px;
+    }
+
+    .header i:hover {
+      background-color: #1a5b028d;
+      color: #1E6031;
+    }
+
+    .header i:active {
+      background-color: #dcdcdc10;
+      color: #1E6031;
+    }
+
+    .container-fluid {
+      padding: 0;
+      position: relative;
+    }
+
+    .background {
+      width: 100%;
+      height: 230px;
+      border-bottom: 20px solid #E0A70D;
+      object-fit: cover;
+      position: relative;
+    }
+
+    .panel-card {
+      display: flex;
+      justify-content: flex-start;
+      background: #fff;
+      padding: 10px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      margin: -80px auto 20px;
+      position: relative;
+      width: 90%;
+      bottom: 50px;
+      max-width: 700px;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .panel {
+      flex: 1 1 0;
+      max-width: 60px;
+      height: 200px;
+      border-radius: 1px;
+      object-fit: cover;
+      transition: transform 100s ease;
+    }
+
+    .status {
+      text-align: center;
+      font-size: 25px;
+      margin-top: -50px;
+      font-weight: 700;
+    }
+
+    .status span {
+      color: #28a745;
+      font-weight: bold;
+    }
+
+    .button-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .button-container .btn {
+      margin: 0 10px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .footer {
+      background-color: #dce9e9;
+      padding: 15px;
+      text-align: center;
+      font-size: 22px;
+      margin-top: 30px;
+      font-weight: bold;
+    }
+
+    .footer i {
+      color: #28a745;
+      margin-right: 8px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .panel {
+        height: 160px;
+        max-width: 45px;
+      }
+      .background {
+        height: 180px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .panel {
+        height: 200px;
+        max-width: 27px;
+      }
+      .panel-card {
+        top: -5px;
+      }
+      .background {
+        height: 150px;
+      }
+      .button-container .btn {
+        font-size: 22px;
+        margin: 5px;
+      }
+      .status {
+      text-align: center;
+      font-size: 25px;
+      margin-top: 10px;
+      font-weight: 700;
+    }
+    .footer {
+      font-size: 25px;
+      margin-top: 30px;
+      font-weight: bold;
+    }
+    }

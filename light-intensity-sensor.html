@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Indoor Farming Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #ffffff;
+      font-family: 'Libre Franklin', sans-serif;
+    }
+
+    :root {
+      --green-grad: linear-gradient(90deg, #008102, #87b237);
+    }
+
+    .header {
+      background-color: #ffffff;
+      border-top: 20px solid #1e6031;
+      border-radius: 10px;
+      color: #009639;
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .header-logo img {
+      height: 100px;
+    }
+
+    .header-text h3,
+    .header-text p {
+      background: var(--green-grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-bar {
+      background: var(--green-grad);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: flex-end;
+      font-weight: bold;
+    }
+
+    .nav-links span {
+      cursor: pointer;
+      margin: 0 1rem;
+    }
+
+    .nav-links span.active {
+      color: #FFD700;
+    }
+
+    .date-banner {
+      padding: 1rem 2rem;
+      font-weight: bold;
+      color: #007f2e;
+      font-size: 1.5rem;
+    }
+
+    .section-title {
+      background: var(--green-grad);
+      color: white;
+      padding: 0.5rem 2rem;
+      font-weight: bold;
+      font-size: 1.4rem;
+      margin-top: 1rem;
+    }
+
+    .sensor-card {
+      background-color: white;
+      border: 2px solid #009638;
+      border-radius: 10px;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+      font-size: 1.5rem;
+    }
+
+    .sensor-icon {
+      font-size: 2.5rem;
+    }
+
+    .form-check-input {
+      width: 2rem;
+      height: 1rem;
+      transform: scale(3);
+      cursor: pointer;
+    }
+
+    .form-check-input:checked {
+      background-color: #567F13;
+    }
+
+    #sensorSection,
+    #dataSection {
+      display: none;
+    }
+
+    #sensorSection.active,
+    #dataSection.active {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <div class="header-logo">
+      <img src="assets/clsu-official-logo.png" alt="CLSU Logo">
+    </div>
+    <div class="header-text">
+      <h3>SMART INDOOR FARMING FOR HOT PEPPER AND TOMATO IN THE PHILIPPINES</h3>
+      <p>Crops and Resources Research and Development Center (CRRDC)</p>
+    </div>
+  </div>
+
+  <div class="nav-bar">
+    <div class="nav-links">
+      <span id="sensorBtn" class="active">SENSORS</span>
+      <span id="dataBtn">DATA INSIGHTS</span>
+    </div>
+  </div>
+
+  <div class="date-banner" id="dateBanner"></div>
+
+  <!-- Sensor Section -->
+  <div id="sensorSection" class="active">
+    <div class="section-title">SENSORS | Solar · Fan · Light</div>
+    <div class="container my-3">
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="sensor-card">
+            <div class="sensor-icon"><i class="bi bi-brightness-high-fill"></i></div>
+            <h3>Solar Panel</h3>
+            <div class="sensor-status">STATUS: RELAY ON</div>
+            <div class="form-check form-switch mt-3">
+              <input class="form-check-input" type="checkbox" checked />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="sensor-card">
+            <div class="sensor-icon"><i class="bi bi-fan"></i></div>
+            <h3>Auxiliary Fan</h3>
+            <div class="sensor-status">STATUS: RELAY ON</div>
+            <div class="form-check form-switch mt-3">
+              <input class="form-check-input" type="checkbox" checked />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="sensor-card">
+            <div class="sensor-icon"><i class="bi bi-lightbulb-fill"></i></div>
+            <h3>Light Sensor</h3>
+            <div class="sensor-status">STATUS: CONNECTED</div>
+            <div class="sensor-value mt-2">20055.5 lux</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">SENSORS | NPK</div>
+    <div class="container my-3">
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="sensor-card">
+            <div class="sensor-icon"><img src="assets/npk-icon.png" height="50" /></div>
+            <h3>NPK Sensor</h3>
+            <div class="sensor-status">STATUS: CONNECTED</div>
+            <div class="sensor-value mt-2">N: 0 ppm | P: 0 ppm | K: 0 ppm</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Insight Section -->
+  <div id="dataSection">
+    <div class="section-title">DATA INSIGHTS | Light Graph</div>
+    <div class="container my-3">
+      <div class="alert alert-warning">
+        <strong>Insert chart here...</strong>
+      </div>
+    </div>
+
+    <div class="section-title">DATA INSIGHTS | NPK Graph</div>
+    <div class="container my-3">
+      <div class="alert alert-warning">
+        <strong>Insert chart here...</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function updateDateTime() {
+      const now = new Date();
+      const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
+      const formattedDate = now.toLocaleDateString('en-US', optionsDate);
+      const optionsTime = { hour: 'numeric', minute: '2-digit', hour12: true };
+      const formattedTime = now.toLocaleTimeString('en-US', optionsTime);
+      document.getElementById('dateBanner').innerHTML =
+        `Today is ${formattedDate} (${formattedTime})<br><span style="font-size: 1.5rem; color: #007f2e;">HELLO, FARMER!</span>`;
+    }
+
+    updateDateTime();
+    setInterval(updateDateTime, 60000);
+
+    document.getElementById('sensorBtn').addEventListener('click', function () {
+      document.getElementById('sensorSection').classList.add('active');
+      document.getElementById('dataSection').classList.remove('active');
+      this.classList.add('active');
+      document.getElementById('dataBtn').classList.remove('active');
+    });
+
+    document.getElementById('dataBtn').addEventListener('click', function () {
+      document.getElementById('sensorSection').classList.remove('active');
+      document.getElementById('dataSection').classList.add('active');
+      this.classList.add('active');
+      document.getElementById('sensorBtn').classList.remove('active');
+    });
+  </script>
+</body>
+
+</html>

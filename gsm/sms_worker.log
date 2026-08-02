@@ -1,0 +1,1081 @@
+
+==== 2026-07-25 14:25:28.32 ====
+Enter serial AT mode: a / +ok
+AT+CMEE=2: AT+CMEE=2
+
+OK
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 254,40,254,40,254,40
+
+OK
+AT+CMGL response:
+AT+CMGL="ALL"
+
++CMS ERROR:Operation not allowed
+Exit serial AT mode: AT+ENTM
+
+OK
+
+==== 2026-07-25 14:26:01.26 ====
+Enter serial AT mode: a / +ok
+AT+CMEE=2: AT+CMEE=2
+
+OK
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 254,40,254,40,254,40
+
+OK
+AT+CMGL response:
+AT+CMGL="ALL"
+
++CMS ERROR:Operation not allowed
+Exit serial AT mode: AT+ENTM
+
+OK
+
+==== 2026-07-25 14:27:00.28 ====
+Enter serial AT mode: a / +ok
+AT+CMEE=2: AT+CMEE=2
+
+OK
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 254,40,254,40,254,40
+
+OK
+AT+CMGL response:
+AT+CMGL="ALL"
+
++CMS ERROR:Operation not allowed
+Exit serial AT mode: AT+ENTM
+
+OK
+
+==== 2026-07-25 14:30:11.66 ====
+GM3 was already in serial AT mode
+AT+CMEE=2: AT+CMEE=2
+
+OK
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 0,40,0,40,0,40
+
+OK
+AT+CMGL response:
+AT+CMGL="ALL"
+
+OK
+
+==== 2026-07-25 14:31:01.66 ====
+Enter serial AT mode: a / +ok
+AT+CMEE=2: AT+CMEE=2
+
+OK
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 0,40,0,40,0,40
+
+OK
+AT+CMGL response:
+AT+CMGL="ALL"
+
+OK
+
+==== 2026-07-25 14:32:00.67 ====
+Enter serial AT mode: a / +ok
+AT+CMEE=2: AT+CMEE=2
+
+OK
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 0,40,0,40,0,40
+
+OK
+AT+CMGL response:
+AT+CMGL="ALL"
+
+OK
+
+==== 2026-07-25 14:33:00.67 ====
+Enter serial AT mode: a / +ok
+AT+CMEE=2: AT+CMEE=2
+
+OK
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 0,40,0,40,0,40
+
+OK
+AT+CMGL response:
+AT+CMGL="ALL"
+
+OK
+
+==== 2026-07-25 14:34:00.66 ====
+GM3 was already in serial AT mode
+AT+CMEE=2: AT+CMEE=2
+
+OK
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 0,40,0,40,0,40
+
+OK
+AT+CMGL response:
+AT+CMGL="ALL"
+
+OK
+
+==== 2026-07-25 14:35:00.68 ====
+Enter serial AT mode: a / +ok
+AT+CMEE=2: AT+CMEE=2
+
+OK
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 0,40,0,40,0,40
+
+OK
+AT+CNMI=2,0,0,0,0: AT+CNMI=2,0,0,0,0
+
+OK
+AT+CMGL response:
+AT+CMGL="ALL"
+
+OK
+
+==== 2026-07-25 14:35:30.64 ====
+GM3 was already in serial AT mode
+AT+CMEE=2: AT+CMEE=2
+
+OK
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CREG?: AT+CREG?
+
++CREG: 1,1
+
+OK
+AT+CSQ: AT+CSQ
+
++CSQ: 24,99
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 0,40,0,40,0,40
+
+OK
+AT+CNMI=2,0,0,0,0: AT+CNMI=2,0,0,0,0
+
+OK
+AT+CMGL response:
+AT+CMGL="ALL"
+
+OK
+
+==== 2026-07-25 14:36:00.69 ====
+GM3 was already in serial AT mode
+AT+CMEE=2: AT+CMEE=2
+
+OK
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CREG?: AT+CREG?
+
++CREG: 1,1
+
+OK
+AT+CSQ: AT+CSQ
+
++CSQ: 29,99
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 0,40,0,40,0,40
+
+OK
+AT+CNMI=2,0,0,0,0: AT+CNMI=2,0,0,0,0
+
+OK
+AT+CMGL response:
+AT+CMGL="ALL"
+
+OK
+
+==== 2026-07-25 14:37:00.69 ====
+GM3 was already in serial AT mode
+AT+CMEE=2: AT+CMEE=2
+
+OK
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CREG?: AT+CREG?
+
++CREG: 1,1
+
+OK
+AT+CSQ: AT+CSQ
+
++CSQ: 29,99
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 2,40,2,40,2,40
+
+OK
+AT+CNMI=2,0,0,0,0: AT+CNMI=2,0,0,0,0
+
+OK
+AT+CMGL response:
+AT+CMGL="ALL"
+
++CMGL: 1,"REC UNREAD","+639950246872",,"2026/07/25,14:31:41+08"
+Smartfarm
++CMGL: 2,"REC UNREAD","+639950246872",,"2026/07/25,14:36:13+08"
+Smartfarm
+
+OK
+Saved SIM message 1 from +639950246872
+SMS result for +639950246872: SmartFarm commands: LIGHT, LIVE, NPK, STATUS, TEMPERATURE, or HUMIDITY.
++CMGS: 3
+
+OK
+Delete SIM message 1: AT+CMGD=1
+
+OK
+Saved SIM message 2 from +639950246872
+SMS result for +639950246872: SmartFarm commands: LIGHT, LIVE, NPK, STATUS, TEMPERATURE, or HUMIDITY.
++CMGS: 4
+
+OK
+Delete SIM message 2: AT+CMGD=2
+
+OK
+
+==== 2026-07-25 14:38:00.71 ====
+ERROR: RuntimeError: GM3 did not acknowledge +++: +++
+Exit code: 
+
+==== 2026-07-25 14:39:00.74 ====
+ERROR: RuntimeError: GM3 did not acknowledge +++: +++
+Exit code: 
+
+==== 2026-07-25 14:40:00.73 ====
+ERROR: RuntimeError: GM3 did not acknowledge +++: +++
+Exit code: 
+
+==== 2026-07-25 14:40:50.54 ====
+GM3 serial AT escape was silent; continuing in existing session
+AT+CMEE=2: AT+CMEE=2
+
+
++CME ERROR:invalid command line
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CREG?: AT+CREG?
+
++CREG: 1,1
+
+OK
+AT+CSQ: AT+CSQ
+
++CSQ: 29,99
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 254,40,254,40,254,40
+
+OK
+AT+CNMI=2,0,0,0,0: AT+CNMI=2,0,0,0,0
+
+OK
+AT+CMGL response:
+AT+CMGL="ALL"
+
++CMS ERROR:Operation not allowed
+ERROR: RuntimeError: Could not list SIM messages: AT+CMGL="ALL"
+
++CMS ERROR:Operation not allowed
+Exit code: 
+
+==== 2026-07-25 14:41:54.10 ====
+GM3 serial AT escape was silent; continuing in existing session
+AT+CMEE=2: AT+CMEE=2
+
+
++CME ERROR:invalid command line
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CREG?: AT+CREG?
+
++CREG: 1,1
+
+OK
+AT+CSQ: AT+CSQ
+
++CSQ: 29,99
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 254,40,254,40,254,40
+
+OK
+AT+CNMI=2,0,0,0,0: AT+CNMI=2,0,0,0,0
+
+OK
+AT+CMGL response:
+AT+CMGL="ALL"
+
++CMS ERROR:Operation not allowed
+Reset GM3 for next poll: AT+Z
+
+OK
+ERROR: RuntimeError: Could not list SIM messages: AT+CMGL="ALL"
+
++CMS ERROR:Operation not allowed
+Exit code: 
+
+==== 2026-07-25 14:43:00.75 ====
+Enter serial AT mode: a / +ok
+AT+CMEE=2: AT+CMEE=2
+
+OK
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CREG?: AT+CREG?
+
++CREG: 1,13
+
+OK
+AT+CSQ: AT+CSQ
+
++CSQ: 0,0
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 0,40,0,40,0,40
+
+OK
+AT+CNMI=2,0,0,0,0: AT+CNMI=2,0,0,0,0
+
+OK
+AT+CMGL response:
+AT+CMGL="ALL"
+
+OK
+
+==== 2026-07-25 14:44:00.77 ====
+Enter serial AT mode: a / +ok
+AT+CMEE=2: AT+CMEE=2
+
+OK
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CREG?: AT+CREG?
+
++CREG: 1,12
+
+OK
+AT+CSQ: AT+CSQ
+
++CSQ: 0,0
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 0,40,0,40,0,40
+
+OK
+AT+CNMI=2,0,0,0,0: AT+CNMI=2,0,0,0,0
+
+OK
+AT+CMGL response:
+AT+CMGL="ALL"
+
+OK
+
+==== 2026-07-25 14:45:00.78 ====
+Enter serial AT mode: a / +ok
+AT+CMEE=2: AT+CMEE=2
+
+OK
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CREG?: AT+CREG?
+
++CREG: 1,1
+
+OK
+AT+CSQ: AT+CSQ
+
++CSQ: 29,99
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 0,40,0,40,0,40
+
+OK
+AT+CNMI=2,0,0,0,0: AT+CNMI=2,0,0,0,0
+
+OK
+AT+CMGL response:
+AT+CMGL="ALL"
+
+OK
+
+==== 2026-07-25 14:45:07.23 ====
+GM3 was already in serial AT mode
+AT+CMEE=2: AT+CMEE=2
+
+OK
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CREG?: AT+CREG?
+
++CREG: 1,1
+
+OK
+AT+CSQ: AT+CSQ
+
++CSQ: 29,99
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 0,40,0,40,0,40
+
+OK
+AT+CNMI=2,0,0,0,0: AT+CNMI=2,0,0,0,0
+
+OK
+AT+CMGL response:
+AT+CMGL="ALL"
+
+OK
+
+==== 2026-07-25 14:45:39.49 ====
+GM3 was already in serial AT mode
+AT+CMEE=2: AT+CMEE=2
+
+OK
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CREG?: AT+CREG?
+
++CREG: 1,1
+
+OK
+AT+CSQ: AT+CSQ
+
++CSQ: 29,99
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 0,40,0,40,0,40
+
+OK
+AT+CNMI=2,0,0,0,0: AT+CNMI=2,0,0,0,0
+
+OK
+SMS daemon connected
+AT+CMGL response:
+AT+CMGL="ALL"
+
+OK
+AT+CMGL response:
+AT+CMGL="ALL"
+
+OK
+AT+CMGL response:
+AT+CMGL="ALL"
+
+OK
+^C
+==== 2026-07-25 14:46:25.42 ====
+GM3 was already in serial AT mode
+AT+CMEE=2: AT+CMEE=2
+
+OK
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CREG?: AT+CREG?
+
++CREG: 1,1
+
+OK
+AT+CSQ: AT+CSQ
+
++CSQ: 29,99
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 0,40,0,40,0,40
+
+OK
+AT+CNMI=2,0,0,0,0: AT+CNMI=2,0,0,0,0
+
+OK
+SMS daemon connected
+AT+CMGL response:
+AT+CMGL="ALL"
+
+OK
+AT+CMGL response:
+AT+CMGL="ALL"
+
++CMGL: 1,"REC UNREAD","+639950246872",,"2026/07/25,14:37:51+08"
+Status
++CMGL: 2,"REC UNREAD","+639950246872",,"2026/07/25,14:46:27+08"
+Smartfarm
+
+OK
+Saved SIM message 1 from +639950246872
+SMS result for +639950246872: STATUS
+Light S1/S2: -2.0/-2.0 lux
+N/P/K: 370.0/78.99/4.31
+Moisture/pH: 33.38/3.17
+Temp/Humidity: 28.32 deg C / 84.96%
++CMGS: 5
+
+OK
+Delete SIM message 1: AT+CMGD=1
+
+OK
+Saved SIM message 2 from +639950246872
+SMS result for +639950246872: SmartFarm commands: LIGHT, LIVE, NPK, STATUS, TEMPERATURE, or HUMIDITY.
++CMGS: 6
+
+OK
+Delete SIM message 2: AT+CMGD=2
+
+OK
+AT+CMGL response:
+AT+CMGL="ALL"
+
++CMS ERROR:Operation not allowed
+Daemon error: RuntimeError: Could not list SIM messages: AT+CMGL="ALL"
+
++CMS ERROR:Operation not allowed
+GM3 serial AT escape was silent; continuing in existing session
+AT+CMEE=2: AT+CMEE=2
+
+
++CME ERROR:invalid command line
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CREG?: AT+CREG?
+
++CREG: 1,1
+
+OK
+AT+CSQ: AT+CSQ
+
++CSQ: 28,99
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 254,40,254,40,254,40
+
+OK
+AT+CNMI=2,0,0,0,0: AT+CNMI=2,0,0,0,0
+
+OK
+SMS daemon connected
+AT+CMGL response:
+AT+CMGL="ALL"
+
++CMS ERROR:Operation not allowed
+Daemon error: RuntimeError: Could not list SIM messages: AT+CMGL="ALL"
+
++CMS ERROR:Operation not allowed
+GM3 serial AT escape was silent; continuing in existing session
+AT+CMEE=2: AT+CMEE=2
+
+
++CME ERROR:invalid command line
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CREG?: AT+CREG?
+
++CREG: 1,1
+
+OK
+AT+CSQ: AT+CSQ
+
++CSQ: 28,99
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 254,40,254,40,254,40
+
+OK
+AT+CNMI=2,0,0,0,0: AT+CNMI=2,0,0,0,0
+
+OK
+SMS daemon connected
+AT+CMGL response:
+AT+CMGL="ALL"
+
++CMS ERROR:Operation not allowed
+Daemon error: RuntimeError: Could not list SIM messages: AT+CMGL="ALL"
+
++CMS ERROR:Operation not allowed
+GM3 serial AT escape was silent; continuing in existing session
+AT+CMEE=2: AT+CMEE=2
+
+
++CME ERROR:invalid command line
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CREG?: AT+CREG?
+
++CREG: 1,1
+
+OK
+AT+CSQ: AT+CSQ
+
++CSQ: 28,99
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 254,40,254,40,254,40
+
+OK
+AT+CNMI=2,0,0,0,0: AT+CNMI=2,0,0,0,0
+
+OK
+SMS daemon connected
+AT+CMGL response:
+AT+CMGL="ALL"
+
++CMS ERROR:Operation not allowed
+Daemon error: RuntimeError: Could not list SIM messages: AT+CMGL="ALL"
+
++CMS ERROR:Operation not allowed
+GM3 serial AT escape was silent; continuing in existing session
+AT+CMEE=2: AT+CMEE=2
+
+
++CME ERROR:invalid command line
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CREG?: AT+CREG?
+
++CREG: 1,1
+
+OK
+AT+CSQ: AT+CSQ
+
++CSQ: 28,99
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 254,40,254,40,254,40
+
+OK
+AT+CNMI=2,0,0,0,0: AT+CNMI=2,0,0,0,0
+
+OK
+SMS daemon connected
+AT+CMGL response:
+AT+CMGL="ALL"
+
++CMS ERROR:Operation not allowed
+Daemon error: RuntimeError: Could not list SIM messages: AT+CMGL="ALL"
+
++CMS ERROR:Operation not allowed
+GM3 serial AT escape was silent; continuing in existing session
+AT+CMEE=2: AT+CMEE=2
+
+
++CME ERROR:invalid command line
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CREG?: AT+CREG?
+
++CREG: 1,1
+
+OK
+AT+CSQ: AT+CSQ
+
++CSQ: 28,99
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 254,40,254,40,254,40
+
+OK
+AT+CNMI=2,0,0,0,0: AT+CNMI=2,0,0,0,0
+
+OK
+SMS daemon connected
+^C
+==== 2026-07-25 14:50:00.83 ====
+Daemon error: RuntimeError: GM3 did not acknowledge +++: +CMS ERROR:Operation not allowed
+Reset GM3 for next poll: +++AT+Z
+
+
++CME ERROR:invalid command line
+GM3 serial AT escape was silent; continuing in existing session
+AT+CMEE=2: AT+CMEE=2
+
+
++CME ERROR:invalid command line
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CREG?: AT+CREG?
+
++CREG: 1,1
+
+OK
+AT+CSQ: AT+CSQ
+
++CSQ: 23,99
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 254,40,254,40,254,40
+
+OK
+AT+CNMI=2,0,0,0,0: AT+CNMI=2,0,0,0,0
+
+OK
+SMS daemon connected
+AT+CMGL response:
+AT+CMGL="ALL"
+
++CMS ERROR:Operation not allowed
+Daemon error: RuntimeError: Could not list SIM messages: AT+CMGL="ALL"
+
++CMS ERROR:Operation not allowed
+Reset GM3 for next poll: AT+Z
+
+OK
+Enter serial AT mode: a / +ok
+AT+CMEE=2: AT+CMEE=2
+
+OK
+AT+CPIN?: AT+CPIN?
+
++CPIN:READY
+
+OK
+AT+CREG?: AT+CREG?
+
++CREG: 1,12
+
+OK
+AT+CSQ: AT+CSQ
+
++CSQ: 0,0
+
+OK
+AT+CSCS="GSM": AT+CSCS="GSM"
+
+OK
+AT+CMGF=1: AT+CMGF=1
+
+OK
+AT+CPMS="SM","SM","SM": AT+CPMS="SM","SM","SM"
+
++CPMS: 0,40,0,40,0,40
+
+OK
+AT+CNMI=2,0,0,0,0: AT+CNMI=2,0,0,0,0
+
+OK
+SMS daemon connected
+AT+CMGL response:
+AT+CMGL="ALL"
+
+OK
+AT+CMGL response:
+AT+CMGL="ALL"
+
+OK
+AT+CMGL response:
+
+AT+CMGL response:
+
+AT+CMGL response:
+
+AT+CMGL response:
+AT+CMGL="ALL"
+AT+CMGL response:
+AT+CMGL="ALL"
+AT+CMGL response:
+AT+CMGL="ALL"
+AT+CMGL response:
+
+AT+CMGL response:
+
+^C

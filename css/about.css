@@ -1,0 +1,252 @@
+/* =============================================
+   About Us Page — Team card hover-reveal styles
+   ============================================= */
+
+.about-section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+    padding: 24px 28px;
+    background: linear-gradient(135deg, #009639 0%, #87b237 100%);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 150, 57, 0.18);
+    animation: aboutSlideDown 0.5s ease-out;
+}
+
+.about-section-icon {
+    font-size: 2.5rem;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.2);
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.about-section-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    letter-spacing: 0.02em;
+}
+
+.about-section-header p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.88);
+    margin: 4px 0 0 0;
+}
+
+/* ---- Team Grid ---- */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    margin-bottom: 2rem;
+}
+
+/* ---- Team Card ---- */
+.team-card {
+    position: relative;
+    background: var(--glass-bg, #fff);
+    border: 1.5px solid var(--glass-border, rgba(255,255,255,0.12));
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1),
+                box-shadow 0.3s cubic-bezier(0.4,0,0.2,1),
+                border-color 0.3s ease;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+    animation: aboutFadeUp 0.5s ease-out backwards;
+}
+
+.team-card:nth-child(1)  { animation-delay: 0.05s; }
+.team-card:nth-child(2)  { animation-delay: 0.10s; }
+.team-card:nth-child(3)  { animation-delay: 0.15s; }
+.team-card:nth-child(4)  { animation-delay: 0.20s; }
+.team-card:nth-child(5)  { animation-delay: 0.25s; }
+.team-card:nth-child(6)  { animation-delay: 0.30s; }
+.team-card:nth-child(7)  { animation-delay: 0.35s; }
+.team-card:nth-child(8)  { animation-delay: 0.40s; }
+.team-card:nth-child(9)  { animation-delay: 0.45s; }
+.team-card:nth-child(10) { animation-delay: 0.50s; }
+.team-card:nth-child(11) { animation-delay: 0.55s; }
+.team-card:nth-child(12) { animation-delay: 0.60s; }
+
+.team-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 40px rgba(0, 150, 57, 0.18);
+    border-color: #87b237;
+}
+
+/* ---- Card Image Header (top half, contains photo) ---- */
+.team-card-header {
+    position: relative;
+    height: 200px;
+    background: linear-gradient(135deg, #009639 0%, #87b237 100%);
+    overflow: hidden;
+    z-index: 5;
+    transition: opacity 0.45s ease-out 0.9s;
+}
+
+.team-card:hover .team-card-header {
+    opacity: 0;
+}
+
+.team-avatar {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.team-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+}
+
+/* ---- Full-card Hover Overlay Photo ---- */
+/* Each card reads its own image via JS-set CSS var --card-img */
+.team-image-overlay {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-color: #00703c;
+    opacity: 0;
+    z-index: 20;
+    pointer-events: none;
+    border-radius: 16px;
+    transform: scale(1.03);
+    transition: opacity 0s 0.9s;
+}
+
+/* Desktop: reveal overlay after 0.9 s hold */
+@media (min-width: 769px) {
+    .team-card:hover .team-image-overlay {
+        opacity: 1;
+        transform: scale(1);
+        transition: opacity 0.45s ease-out 0.9s,
+                    transform 0.45s ease-out 0.9s;
+    }
+
+    .team-card-body {
+        position: relative;
+        z-index: 1;
+        transition: opacity 0.45s ease-out 0.9s,
+                    filter 0.45s ease-out 0.9s;
+    }
+
+    .team-card:hover .team-card-body {
+        opacity: 0.25;
+        filter: blur(2px);
+    }
+}
+
+/* ---- Card Body ---- */
+.team-card-body {
+    padding: 20px 24px 24px;
+    text-align: center;
+}
+
+.team-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary, #1a1a1a);
+    margin: 0 0 6px;
+    line-height: 1.35;
+}
+
+.team-role {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #009639;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 14px;
+}
+
+.team-expertise {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    margin-bottom: 14px;
+}
+
+.expertise-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: linear-gradient(135deg, #009639 0%, #87b237 100%);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0, 150, 57, 0.2);
+    transition: transform 0.2s ease;
+}
+
+.expertise-tag:hover {
+    transform: scale(1.06);
+}
+
+.team-bio {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--text-secondary, #555);
+    text-align: center;
+    margin: 0;
+}
+
+/* ---- Animations ---- */
+@keyframes aboutFadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes aboutSlideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+    .team-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .about-section-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .about-section-header h2 { font-size: 1.5rem; }
+
+    /* Disable animated overlay on mobile */
+    .team-card:hover { transform: none; box-shadow: 0 4px 16px rgba(0,0,0,0.07); }
+    .team-card:hover .team-image-overlay { opacity: 0; }
+    .team-card:hover .team-card-header { opacity: 1; }
+    .team-card:hover .team-card-body { opacity: 1; filter: none; }
+}
+
+@media (min-width: 769px) and (max-width: 1100px) {
+    .team-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1101px) {
+    .team-grid { grid-template-columns: repeat(3, 1fr); }
+    /* Centre the last card when odd in a 3-col row */
+    .team-grid .team-card:last-child:nth-child(3n + 1) { grid-column: 2; }
+}
