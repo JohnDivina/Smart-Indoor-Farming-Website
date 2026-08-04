@@ -2,8 +2,8 @@
 date_default_timezone_set("Asia/Manila");
 
 // Check for PostgreSQL environment variables (Neon PostgreSQL / Vercel / Railway)
-$db_url = getenv('DATABASE_URL') ?: getenv('POSTGRES_URL');
-$pghost = getenv('PGHOST') ?: getenv('POSTGRES_HOST');
+$db_url = getenv('DATABASE_URL') ?: (getenv('POSTGRES_URL') ?: ($_ENV['DATABASE_URL'] ?? ($_ENV['POSTGRES_URL'] ?? ($_SERVER['DATABASE_URL'] ?? ($_SERVER['POSTGRES_URL'] ?? null)))));
+$pghost = getenv('PGHOST') ?: (getenv('POSTGRES_HOST') ?: ($_ENV['PGHOST'] ?? ($_ENV['POSTGRES_HOST'] ?? ($_SERVER['PGHOST'] ?? ($_SERVER['POSTGRES_HOST'] ?? null)))));
 
 if ($db_url || $pghost) {
     class SmartFarmPostgresResult {
