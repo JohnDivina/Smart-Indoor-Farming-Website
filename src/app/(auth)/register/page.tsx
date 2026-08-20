@@ -4,8 +4,9 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 import GlassPanel from '@/components/ui/GlassPanel';
-import { FaUserPlus, FaEye, FaEyeSlash, FaCheck } from 'react-icons/fa6';
+import { FaUserPlus, FaEye, FaEyeSlash, FaCheck, FaGoogle } from 'react-icons/fa6';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -259,6 +260,33 @@ export default function RegisterPage() {
             )}
           </button>
         </form>
+
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            margin: '20px 0',
+            color: 'var(--text-muted)',
+            fontSize: '0.8rem',
+            textTransform: 'uppercase',
+            letterSpacing: '1px',
+          }}
+        >
+          <div style={{ flex: 1, height: '1px', background: 'var(--glass-border)' }} />
+          <span>OR</span>
+          <div style={{ flex: 1, height: '1px', background: 'var(--glass-border)' }} />
+        </div>
+
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
+          style={{ width: '100%', height: '46px', gap: '10px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+        >
+          <FaGoogle style={{ color: '#ea4335' }} />
+          <span>Sign up with Google</span>
+        </button>
 
         <div style={{ textAlign: 'center', marginTop: '24px', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
           Already have an account?{' '}

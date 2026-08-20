@@ -347,18 +347,15 @@ function LoginFormContent() {
               )}
             </button>
 
-            {/* Optional Google Login */}
-            {process.env.NEXT_PUBLIC_ENABLE_GOOGLE_AUTH === 'true' && (
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={handleGoogleLogin}
-                style={{ width: '100%', height: '46px', gap: '10px' }}
-              >
-                <FaGoogle style={{ color: '#ea4335' }} />
-                <span>Continue with Google</span>
-              </button>
-            )}
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={handleGoogleLogin}
+              style={{ width: '100%', height: '46px', gap: '10px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              <FaGoogle style={{ color: '#ea4335' }} />
+              <span>Continue with Google</span>
+            </button>
 
             <div style={{ textAlign: 'center', marginTop: '24px', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
               Don&apos;t have an account?{' '}

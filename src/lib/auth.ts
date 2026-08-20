@@ -144,10 +144,78 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, user, account }) {
+    async signIn({ user, account }) {
+      if (account?.provider === 'google') {
+        if (!user.email) return false;
+        try {
+          // Find or create user in DB
+          let dbUser = await prisma.user.findFirst({
+            where: { email: { equals: user.email, mode: 'insensitive' } },
+          });
+
+          if (!dbUser) {
+            // Generate clean unique username
+            const baseUsername = (user.name || user.email.split('@')[0])
+              .toLowerCase()
+              .replace(/[^a-z0-9_]/g, '_')
+              .slice(0, 20);
+
+            const duplicate = await prisma.user.findFirst({
+              where: { username: { equals: baseUsername, mode: 'insensitive' } },
+            });
+            const finalUsername = duplicate
+              ? `${baseUsername}_${Math.floor(100 + Math.random() * 900)}`
+              : baseUsername;
+
+            const randomPassword = await bcrypt.hash(crypto.randomBytes(32).toString('hex'), 12);
+
+            dbUser = await prisma.user.create({
+              data: {
+                username: finalUsername,
+                email: user.email,
+                password: randomPassword,
+                emailVerified: 1, // Pre-verified via Google
+                googleId: account.providerAccountId,
+              },
+            });
+          } else {
+            // Link Google ID & ensure email_verified is 1
+            await prisma.user.update({
+              where: { id: dbUser.id },
+              data: {
+                googleId: account.providerAccountId,
+                emailVerified: 1,
+              },
+            });
+          }
+
+          // Record user activity
+          try {
+            await prisma.activeUser.upsert({
+              where: { userId: dbUser.id },
+              update: { lastActivity: new Date(), currentPage: 'Dashboard Overview' },
+              create: { userId: dbUser.id, lastActivity: new Date(), currentPage: 'Dashboard Overview' },
+            });
+          } catch (actErr) {
+            console.warn('Active user logging error:', actErr);
+          }
+
+          (user as any).id = String(dbUser.id);
+          (user as any).username = dbUser.username;
+          (user as any).isGuest = false;
+
+          return true;
+        } catch (err) {
+          console.error('Google OAuth sign-in error:', err);
+          return false;
+        }
+      }
+      return true;
+    },
+    async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
-        token.username = (user as any).username || user.name || '';
+        token.id = (user as any).id || token.id;
+        token.username = (user as any).username || user.name || token.username || '';
         token.phonenumber = (user as any).phonenumber;
         token.isGuest = (user as any).isGuest ?? false;
       }
