@@ -16,13 +16,25 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // 2. Allow auth pages
+  // 2. Allow auth & public informational pages
   const isAuthPage =
     pathname === '/login' ||
     pathname === '/register' ||
     pathname === '/verify-otp' ||
     pathname === '/forgot-password' ||
     pathname === '/reset-password';
+
+  const isPublicPage =
+    isAuthPage ||
+    pathname === '/terms' ||
+    pathname === '/privacy' ||
+    pathname === '/about' ||
+    pathname === '/help' ||
+    pathname === '/contact';
+
+  if (isPublicPage && !isAuthPage) {
+    return NextResponse.next();
+  }
 
   // 3. Get JWT token
   const token = await getToken({

@@ -92,6 +92,7 @@ export default function SolarPanelPage() {
       <Header
         title="Solar Panel Energy Management"
         subtitle="Photovoltaic generation tracking, relay switches, and energy harvesting telemetry."
+        backHref="/dashboard"
       />
 
       {isGuest && <GuestBanner featureName="Solar Panel power switches and automation" />}

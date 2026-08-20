@@ -230,6 +230,7 @@ export default function SettingsPage() {
       <Header
         title="Account &amp; System Settings"
         subtitle="Manage your operator profile, security credentials, and two-factor authentication."
+        backHref="/dashboard"
       />
 
       <div style={{ maxWidth: '840px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '24px' }}>

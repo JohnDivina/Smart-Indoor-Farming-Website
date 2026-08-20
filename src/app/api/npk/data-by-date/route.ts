@@ -9,7 +9,9 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const dateParam = searchParams.get('date');
 
-    const targetDate = dateParam ? new Date(dateParam) : new Date();
+    const targetDate = dateParam
+      ? new Date(dateParam.includes('T') ? dateParam : `${dateParam}T00:00:00`)
+      : new Date();
 
     const readings = await prisma.npkSensor.findMany({
       where: {

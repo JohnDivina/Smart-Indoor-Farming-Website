@@ -102,6 +102,9 @@ export default function TempHumidityPage() {
       <Header
         title="Microclimate Telemetry"
         subtitle="Real-time ambient temperature and relative humidity monitoring for greenhouse bays."
+        backHref="/dashboard"
+        status={liveData?.status || 'connected'}
+        lastUpdated={liveData?.timestamp || 'Just now'}
       />
 
       {/* ── Tab Selector ── */}
@@ -156,17 +159,14 @@ export default function TempHumidityPage() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
               {/* Temperature Card */}
               <GlassPanel style={{ padding: '32px 28px', borderLeft: '4px solid var(--accent-primary)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'rgba(0, 102, 0, 0.12)', color: 'var(--accent-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px' }}>
-                      <FaTemperatureHalf />
-                    </div>
-                    <div>
-                      <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)' }}>Ambient Temperature</h3>
-                      <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Target: 24.0°C - 30.0°C</span>
-                    </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                  <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'rgba(0, 102, 0, 0.12)', color: 'var(--accent-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px' }}>
+                    <FaTemperatureHalf />
                   </div>
-                  <StatusBadge status={liveData?.status || 'connected'} />
+                  <div>
+                    <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)' }}>Ambient Temperature</h3>
+                    <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Target: 24.0°C - 30.0°C</span>
+                  </div>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
@@ -183,17 +183,14 @@ export default function TempHumidityPage() {
 
               {/* Humidity Card */}
               <GlassPanel style={{ padding: '32px 28px', borderLeft: '4px solid #3b82f6' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'rgba(59, 130, 246, 0.12)', color: '#3b82f6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px' }}>
-                      <FaDroplet />
-                    </div>
-                    <div>
-                      <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)' }}>Relative Humidity</h3>
-                      <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Target: 60% - 80%</span>
-                    </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                  <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'rgba(59, 130, 246, 0.12)', color: '#3b82f6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px' }}>
+                    <FaDroplet />
                   </div>
-                  <StatusBadge status={liveData?.status || 'connected'} />
+                  <div>
+                    <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)' }}>Relative Humidity</h3>
+                    <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Target: 60% - 80%</span>
+                  </div>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>

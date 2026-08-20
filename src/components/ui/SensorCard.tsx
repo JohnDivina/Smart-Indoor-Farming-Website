@@ -133,22 +133,6 @@ export const SensorCard: React.FC<SensorCardProps> = ({
           </div>
         )}
       </div>
-
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          paddingTop: '12px',
-          borderTop: '1px solid var(--glass-border)',
-          fontSize: '0.85rem',
-          color: 'var(--accent-primary)',
-          fontWeight: 600,
-        }}
-      >
-        <span>View Details &amp; History</span>
-        <FaChevronRight style={{ fontSize: '12px' }} />
-      </div>
     </GlassPanel>
   );
 

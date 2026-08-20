@@ -121,6 +121,9 @@ export default function NpkSensorPage() {
       <Header
         title="Soil Nutrient & pH Telemetry"
         subtitle="Precision soil macronutrient analysis for Nitrogen (N), Phosphorus (P), Potassium (K), and Soil pH."
+        backHref="/dashboard"
+        status={liveData?.status || 'connected'}
+        lastUpdated={liveData?.timestamp || 'Just now'}
       />
 
       {/* ── Tab Selector ── */}
@@ -175,9 +178,8 @@ export default function NpkSensorPage() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px' }}>
               {/* Nitrogen */}
               <GlassPanel style={{ padding: '24px 28px', borderLeft: '4px solid #3b82f6' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                <div style={{ marginBottom: '12px' }}>
                   <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#3b82f6' }}>Nitrogen (N)</span>
-                  <StatusBadge status={liveData?.status || 'connected'} />
                 </div>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
                   <span style={{ fontSize: '2.8rem', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1 }}>
@@ -192,9 +194,8 @@ export default function NpkSensorPage() {
 
               {/* Phosphorus */}
               <GlassPanel style={{ padding: '24px 28px', borderLeft: '4px solid #F2A900' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                <div style={{ marginBottom: '12px' }}>
                   <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#F2A900' }}>Phosphorus (P)</span>
-                  <StatusBadge status={liveData?.status || 'connected'} />
                 </div>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
                   <span style={{ fontSize: '2.8rem', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1 }}>
@@ -209,9 +210,8 @@ export default function NpkSensorPage() {
 
               {/* Potassium */}
               <GlassPanel style={{ padding: '24px 28px', borderLeft: '4px solid #10b981' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                <div style={{ marginBottom: '12px' }}>
                   <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#10b981' }}>Potassium (K)</span>
-                  <StatusBadge status={liveData?.status || 'connected'} />
                 </div>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
                   <span style={{ fontSize: '2.8rem', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1 }}>

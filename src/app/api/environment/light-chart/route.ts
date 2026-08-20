@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
     let whereClause: any = {};
 
     if (dateParam) {
-      const targetDate = new Date(dateParam);
+      const targetDate = new Date(dateParam.includes('T') ? dateParam : `${dateParam}T00:00:00`);
       whereClause = {
         timestamp: {
           gte: startOfDay(targetDate),

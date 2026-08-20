@@ -59,7 +59,8 @@ export default function RegisterPage() {
       }
 
       // Forward to OTP verification page
-      router.push(`/verify-otp?userId=${data.userId}&email=${encodeURIComponent(email)}&reason=account_creation`);
+      const devParam = data.devOtp ? `&devOtp=${encodeURIComponent(data.devOtp)}` : '';
+      router.push(`/verify-otp?userId=${data.userId}&email=${encodeURIComponent(email)}&reason=account_creation${devParam}`);
     } catch (err: any) {
       setError(err?.message || 'A network error occurred. Please try again.');
       setLoading(false);

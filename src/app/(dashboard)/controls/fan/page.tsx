@@ -97,6 +97,7 @@ export default function AuxiliaryFanPage() {
       <Header
         title="Auxiliary Ventilation Fan"
         subtitle="Greenhouse airflow management, temperature dissipation, and scheduled circulation."
+        backHref="/dashboard"
       />
 
       {isGuest && <GuestBanner featureName="Auxiliary Fan controls and scheduling" />}

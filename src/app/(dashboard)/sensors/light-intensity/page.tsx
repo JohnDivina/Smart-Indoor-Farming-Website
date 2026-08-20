@@ -101,6 +101,9 @@ export default function LightIntensityPage() {
       <Header
         title="Light Intensity Telemetry"
         subtitle="Solar irradiation, photosynthetic lux measurements, and illumination cycles."
+        backHref="/dashboard"
+        status={liveData?.status || 'connected'}
+        lastUpdated={liveData?.timestamp || 'Just now'}
       />
 
       {/* ── Tab Selector ── */}
@@ -185,19 +188,6 @@ export default function LightIntensityPage() {
                 <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)' }}>
                   Average hourly photosynthetic photon flux density
                 </p>
-
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '24px', paddingTop: '20px', borderTop: '1px solid var(--glass-border)' }}>
-                  <div>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block' }}>Telemetry Status</span>
-                    <StatusBadge status={liveData?.status || 'connected'} />
-                  </div>
-                  <div>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block' }}>Last Recorded</span>
-                    <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>
-                      {liveData?.timestamp || 'Just now'}
-                    </span>
-                  </div>
-                </div>
               </GlassPanel>
 
               {/* Sunlight Index & Crop Photosynthesis Gauge */}

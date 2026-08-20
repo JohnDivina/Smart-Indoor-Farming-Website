@@ -66,6 +66,7 @@ export default function ContactUsPage() {
       <Header
         title="Contact &amp; Research Support"
         subtitle="Get in touch with the Central Luzon State University precision agriculture research team."
+        backHref="/dashboard"
       />
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', maxWidth: '1100px', margin: '0 auto' }}>

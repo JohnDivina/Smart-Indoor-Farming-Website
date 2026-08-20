@@ -113,6 +113,7 @@ export default function FertigationPage() {
       <Header
         title="Fertigation &amp; Irrigation Control"
         subtitle="Automated nutrient dosing pumps, water circulation, and scheduled hydroponic irrigation."
+        backHref="/dashboard"
       />
 
       {isGuest && <GuestBanner featureName="Fertigation pump controls and scheduling" />}

@@ -14,8 +14,10 @@ function VerifyOtpContent() {
   const userId = Number(searchParams.get('userId') || '0');
   const email = searchParams.get('email') || '';
   const reason = searchParams.get('reason') || 'account_creation';
+  const initialDevOtp = searchParams.get('devOtp') || '';
 
-  const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const [devOtpCode, setDevOtpCode] = useState(initialDevOtp);
+  const [otp, setOtp] = useState(initialDevOtp.length === 6 ? initialDevOtp.split('') : ['', '', '', '', '', '']);
   const [timer, setTimer] = useState(60);
   const [canResend, setCanResend] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -125,6 +127,10 @@ function VerifyOtpContent() {
 
       if (res.ok && data.success) {
         setSuccess('A new verification code has been sent to your email.');
+        if (data.devOtp) {
+          setDevOtpCode(data.devOtp);
+          setOtp(data.devOtp.split(''));
+        }
         setTimer(60);
         setCanResend(false);
       } else {
@@ -173,6 +179,23 @@ function VerifyOtpContent() {
           We sent a 6-digit verification code to <br />
           <strong style={{ color: 'var(--text-primary)' }}>{email || 'your email'}</strong>
         </p>
+
+        {devOtpCode && (
+          <div
+            style={{
+              padding: '10px 14px',
+              borderRadius: '10px',
+              background: 'rgba(0, 102, 0, 0.08)',
+              border: '1px solid rgba(0, 102, 0, 0.2)',
+              color: 'var(--accent-primary)',
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              marginBottom: '16px',
+            }}
+          >
+            Verification Code: <strong style={{ fontFamily: 'monospace', letterSpacing: '2px' }}>{devOtpCode}</strong>
+          </div>
+        )}
 
         {success && (
           <div

@@ -67,6 +67,7 @@ export default function HelpCenterPage() {
       <Header
         title="Help Center &amp; Documentation"
         subtitle="Frequently asked questions, troubleshooting guides, and system documentation."
+        backHref="/dashboard"
       />
 
       <div style={{ maxWidth: '960px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '24px' }}>

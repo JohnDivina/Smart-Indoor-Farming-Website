@@ -1,9 +1,14 @@
+'use client';
+
 import React from 'react';
 import Header from '@/components/layout/Header';
 import GlassPanel from '@/components/ui/GlassPanel';
-import { FaShieldHalved } from 'react-icons/fa6';
+import { useRouter } from 'next/navigation';
+import { FaShieldHalved, FaArrowLeft } from 'react-icons/fa6';
 
 export default function PrivacyPolicyPage() {
+  const router = useRouter();
+
   return (
     <>
       <Header
@@ -12,6 +17,15 @@ export default function PrivacyPolicyPage() {
       />
 
       <div style={{ maxWidth: '860px', margin: '0 auto' }}>
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="btn btn-secondary"
+          style={{ marginBottom: '16px', display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem' }}
+        >
+          <FaArrowLeft /> Back
+        </button>
+
         <GlassPanel style={{ padding: '40px 48px', display: 'flex', flexDirection: 'column', gap: '20px', lineHeight: 1.8 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', borderBottom: '1px solid var(--glass-border)', paddingBottom: '16px' }}>
             <FaShieldHalved style={{ color: 'var(--accent-primary)', fontSize: '24px' }} />

@@ -130,7 +130,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
   };
 
   const handleLogout = async () => {
-    await signOut({ callbackUrl: '/login' });
+    try {
+      await signOut({ redirect: false });
+    } catch (e) {
+      console.warn('Signout error:', e);
+    }
+    window.location.href = '/login';
   };
 
   return (

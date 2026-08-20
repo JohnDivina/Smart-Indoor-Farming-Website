@@ -161,6 +161,7 @@ export default function AboutUsPage() {
       <Header
         title="About CLSU Smart Farm"
         subtitle="Central Luzon State University Precision Indoor Agriculture & Automated Smart Greenhouse Project."
+        backHref="/dashboard"
       />
 
       <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '32px' }}>

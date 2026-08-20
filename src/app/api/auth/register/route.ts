@@ -37,31 +37,55 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    if (existingUser) {
-      if (existingUser.username === username) {
-        return NextResponse.json({ success: false, message: 'Username is already taken.' }, { status: 409 });
-      }
-      if (existingUser.email === email) {
-        return NextResponse.json({ success: false, message: 'Email address is already registered.' }, { status: 409 });
-      }
-      if (existingUser.phonenumber === phonenumber) {
-        return NextResponse.json({ success: false, message: 'Phone number is already in use.' }, { status: 409 });
-      }
-    }
-
-    // Hash password with bcrypt
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    // Create user
-    const newUser = await prisma.user.create({
-      data: {
-        username,
-        email,
-        phonenumber,
-        password: hashedPassword,
-        emailVerified: 0,
-      },
-    });
+    let targetUserId: number;
+
+    if (existingUser) {
+      // If user exists AND is already verified, reject registration
+      if (existingUser.emailVerified === 1) {
+        if (existingUser.username.toLowerCase() === username.toLowerCase()) {
+          return NextResponse.json({ success: false, message: 'Username is already registered. Please sign in.' }, { status: 409 });
+        }
+        if (existingUser.email.toLowerCase() === email.toLowerCase()) {
+          return NextResponse.json({ success: false, message: 'Email address is already registered. Please sign in.' }, { status: 409 });
+        }
+        if (existingUser.phonenumber === phonenumber) {
+          return NextResponse.json({ success: false, message: 'Phone number is already in use. Please sign in.' }, { status: 409 });
+        }
+      }
+
+      // If user exists but is NOT verified (unconfirmed email), allow re-registration and re-issue OTP
+      await prisma.user.update({
+        where: { id: existingUser.id },
+        data: {
+          username,
+          email,
+          phonenumber,
+          password: hashedPassword,
+        },
+      });
+
+      targetUserId = existingUser.id;
+
+      // Invalidate previous unexpired OTPs
+      await prisma.loginOtp.updateMany({
+        where: { userId: targetUserId, reason: 'account_creation', used: false },
+        data: { used: true },
+      });
+    } else {
+      // Create new unverified user
+      const newUser = await prisma.user.create({
+        data: {
+          username,
+          email,
+          phonenumber,
+          password: hashedPassword,
+          emailVerified: 0,
+        },
+      });
+      targetUserId = newUser.id;
+    }
 
     // Generate 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -69,7 +93,7 @@ export async function POST(req: NextRequest) {
 
     await prisma.loginOtp.create({
       data: {
-        userId: newUser.id,
+        userId: targetUserId,
         otp,
         expiresAt,
         reason: 'account_creation',
@@ -86,10 +110,13 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      userId: newUser.id,
+      userId: targetUserId,
       email,
-      message: 'Account created! Please check your email for the 6-digit verification code.',
+      message: emailResult.success
+        ? 'Account registered! A 6-digit verification code has been sent to your email.'
+        : `Account registered! Verification code: ${otp} (SMTP: ${emailResult.message})`,
       emailSent: emailResult.success,
+      devOtp: !emailResult.success || process.env.NODE_ENV === 'development' ? otp : undefined,
     });
   } catch (error: any) {
     console.error('Registration API Error:', error);

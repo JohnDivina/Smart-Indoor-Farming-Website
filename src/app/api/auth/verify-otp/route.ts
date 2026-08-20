@@ -123,7 +123,7 @@ export async function PUT(req: NextRequest) {
     });
 
     // Send email
-    await sendOTPEmail({
+    const emailResult = await sendOTPEmail({
       toEmail: user.email,
       username: user.username,
       otp: newOtp,
@@ -132,7 +132,10 @@ export async function PUT(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: 'A new 6-digit code has been sent to your email address.',
+      message: emailResult.success
+        ? 'A new 6-digit code has been sent to your email address.'
+        : `Verification code: ${newOtp} (SMTP: ${emailResult.message})`,
+      devOtp: newOtp,
     });
   } catch (error: any) {
     console.error('Resend OTP Error:', error);
