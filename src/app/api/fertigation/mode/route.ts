@@ -1,0 +1,44 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@/lib/auth';
+import prisma from '@/lib/prisma';
+import { fertigationModeSchema } from '@/lib/validators';
+
+export async function POST(req: NextRequest) {
+  try {
+    const session = await auth();
+    if (session?.user?.isGuest) {
+      return NextResponse.json({ success: false, message: 'Action disabled in guest mode' }, { status: 403 });
+    }
+
+    const body = await req.json();
+    const parseResult = fertigationModeSchema.safeParse(body);
+
+    if (!parseResult.success) {
+      return NextResponse.json({ success: false, message: 'Invalid mode. Must be manual, schedule, or auto.' }, { status: 400 });
+    }
+
+    const { mode } = parseResult.data;
+    const now = new Date();
+
+    await prisma.$transaction([
+      prisma.fertigationControl.upsert({
+        where: { id: 1 },
+        update: { mode, lastUpdated: now, configVersion: { increment: 1 } },
+        create: { id: 1, mode, lastUpdated: now, configVersion: 1 },
+      }),
+      prisma.fertigationState.upsert({
+        where: { id: 1 },
+        update: { mode, lastUpdated: now, configVersion: { increment: 1 } },
+        create: { id: 1, mode, lastUpdated: now, configVersion: 1 },
+      }),
+    ]);
+
+    return NextResponse.json({
+      success: true,
+      mode,
+      message: `Fertigation mode set to ${mode}`,
+    });
+  } catch (error: any) {
+    return NextResponse.json({ success: false, message: error?.message || 'Failed to update mode' }, { status: 500 });
+  }
+}

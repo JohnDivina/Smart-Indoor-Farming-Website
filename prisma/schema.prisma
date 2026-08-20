@@ -1,0 +1,296 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ── Auth & Users ──────────────────────────────────────
+
+model User {
+  id            Int          @id @default(autoincrement())
+  username      String       @unique
+  email         String       @unique
+  phonenumber   String?
+  password      String
+  emailVerified Int          @default(0) @map("email_verified")
+  totpSecret    String?      @map("totp_secret")
+  totpEnabled   Boolean      @default(false) @map("totp_enabled")
+  googleId      String?      @unique @map("google_id")
+  createdAt     DateTime     @default(now()) @map("created_at")
+
+  loginOtps     LoginOtp[]
+  activeUsers   ActiveUser[]
+  accounts      Account[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            Int     @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refreshToken      String? @map("refresh_token") @db.Text
+  accessToken       String? @map("access_token") @db.Text
+  expiresAt         Int?    @map("expires_at")
+  tokenType         String? @map("token_type")
+  scope             String?
+  idToken           String? @map("id_token") @db.Text
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model LoginOtp {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  otp       String
+  expiresAt DateTime @map("expires_at")
+  used      Boolean  @default(false)
+  reason    String   @default("login")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("login_otps")
+}
+
+model ActiveUser {
+  userId       Int      @id @map("user_id")
+  lastActivity DateTime @map("last_activity")
+  currentPage  String?  @default("Unknown") @map("current_page") @db.VarChar(100)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("active_users")
+}
+
+// ── Sensor Data ───────────────────────────────────────
+
+model TempHumiditySensor {
+  id          Int      @id @default(autoincrement())
+  temperature Float
+  humidity    Float
+  timestamp   DateTime @default(now())
+
+  @@map("temphumiditysensor")
+}
+
+model TempHumidityLog {
+  id          Int      @id @default(autoincrement())
+  temperature Float
+  humidity    Float
+  timestamp   DateTime @default(now())
+
+  @@map("temp_humidity_logs")
+}
+
+model LightIntensitySensor {
+  id        Int      @id @default(autoincrement())
+  lux       Float
+  timestamp DateTime @default(now())
+
+  @@map("lightintensitysensor")
+}
+
+model LightStatus {
+  id        Int      @id @default(1)
+  status    String   @default("disconnected") @db.VarChar(50)
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("light_status")
+}
+
+model LiveLightReading {
+  id        Int      @id @default(autoincrement())
+  lux       Float
+  timestamp DateTime @default(now())
+
+  @@map("live_light_readings")
+}
+
+model NpkSensor {
+  id         Int      @id @default(autoincrement())
+  nitrogen   Float
+  phosphorus Float
+  potassium  Float
+  timestamp  DateTime @default(now())
+
+  @@map("npksensor")
+}
+
+model NpkSensorAverage {
+  id            Int      @id @default(autoincrement())
+  avgNitrogen   Float    @map("avg_nitrogen")
+  avgPhosphorus Float    @map("avg_phosphorus")
+  avgPotassium  Float    @map("avg_potassium")
+  sampleCount   Int      @map("sample_count")
+  timestamp     DateTime @default(now())
+
+  @@map("npksensoraverage")
+}
+
+model NpkStatus {
+  id        Int      @id @default(1)
+  status    String   @default("disconnected") @db.VarChar(50)
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("npk_status")
+}
+
+// ── Fan Control ───────────────────────────────────────
+
+model FanControl {
+  id                      Int       @id @default(1)
+  mode                    String    @default("manual") @db.VarChar(50)
+  scheduleTime            DateTime? @map("schedule_time") @db.Time()
+  scheduleDurationMinutes Int       @default(30) @map("schedule_duration_minutes")
+  desiredFanState         String    @default("off") @map("desired_fan_state") @db.VarChar(50)
+  espFanState             String    @default("off") @map("esp_fan_state") @db.VarChar(50)
+  espMode                 String    @default("manual") @map("esp_mode") @db.VarChar(50)
+  lastHeartbeat           DateTime? @map("last_heartbeat")
+  lastUpdated             DateTime  @default(now()) @map("last_updated")
+  lastScheduleRun         DateTime? @map("last_schedule_run") @db.Date
+
+  @@map("fan_control")
+}
+
+model FanState {
+  id                      Int       @id @default(1)
+  mode                    String    @default("manual") @db.VarChar(50)
+  scheduleTime            DateTime? @map("schedule_time") @db.Time()
+  scheduleStopTime        DateTime? @map("schedule_stop_time") @db.Time()
+  scheduleDurationMinutes Int       @default(30) @map("schedule_duration_minutes")
+  desiredFanState         String    @default("off") @map("desired_fan_state") @db.VarChar(50)
+  espFanState             String    @default("off") @map("esp_fan_state") @db.VarChar(50)
+  espMode                 String    @default("manual") @map("esp_mode") @db.VarChar(20)
+  lastHeartbeat           DateTime? @map("last_heartbeat")
+  lastUpdated             DateTime  @default(now()) @map("last_updated")
+  lastScheduleRun         DateTime? @map("last_schedule_run")
+  configVersion           Int       @default(0) @map("config_version")
+  ackConfigVersion        Int       @default(0) @map("ack_config_version")
+
+  @@map("fan_state")
+}
+
+model FanLog {
+  id        Int      @id @default(autoincrement())
+  action    String   @db.VarChar(10)
+  timestamp DateTime @default(now())
+
+  @@map("fan_log")
+}
+
+// ── Fertigation Control ──────────────────────────────
+
+model FertigationControl {
+  id                      Int       @id @default(1)
+  mode                    String    @default("manual") @db.VarChar(50)
+  scheduleTime            DateTime? @map("schedule_time") @db.Time()
+  scheduleDurationMinutes Int       @default(30) @map("schedule_duration_minutes")
+  desiredPumpState        String    @default("off") @map("desired_pump_state") @db.VarChar(50)
+  espPumpState            String    @default("off") @map("esp_pump_state") @db.VarChar(50)
+  espMode                 String    @default("manual") @map("esp_mode") @db.VarChar(50)
+  lastHeartbeat           DateTime? @map("last_heartbeat")
+  lastUpdated             DateTime  @default(now()) @map("last_updated")
+  lastScheduleRun         DateTime? @map("last_schedule_run") @db.Date
+  scheduleStopTime        DateTime? @map("schedule_stop_time") @db.Time()
+  configVersion           Int       @default(0) @map("config_version")
+  ackConfigVersion        Int       @default(0) @map("ack_config_version")
+
+  @@map("fertigation_control")
+}
+
+model FertigationState {
+  id               Int       @id @default(1)
+  mode             String    @default("manual") @db.VarChar(50)
+  desiredPumpState String    @default("off") @map("desired_pump_state") @db.VarChar(50)
+  actualPumpState  String    @default("off") @map("actual_pump_state") @db.VarChar(50)
+  scheduleTime     DateTime? @map("schedule_time") @db.Time()
+  scheduleStopTime DateTime? @map("schedule_stop_time") @db.Time()
+  lastHeartbeat    DateTime? @map("last_heartbeat")
+  lastUpdated      DateTime  @default(now()) @map("last_updated")
+  configVersion    Int       @default(0) @map("config_version")
+  ackConfigVersion Int       @default(0) @map("ack_config_version")
+
+  @@map("fertigation_state")
+}
+
+model FertigationSchedule {
+  id        Int       @id @default(autoincrement())
+  startTime DateTime? @map("start_time") @db.Time()
+  stopTime  DateTime? @map("stop_time") @db.Time()
+  isActive  Boolean   @default(true) @map("is_active")
+
+  @@map("fertigation_schedule")
+}
+
+model FertigationLog {
+  id        Int      @id @default(autoincrement())
+  action    String   @db.VarChar(10)
+  timestamp DateTime @default(now())
+
+  @@map("fertigation_log")
+}
+
+model IrrigationLog {
+  id        Int      @id @default(autoincrement())
+  action    String
+  source    String?
+  timestamp DateTime @default(now())
+
+  @@map("irrigation_log")
+}
+
+// ── Solar Panel Control ──────────────────────────────
+
+model SolarPanelControl {
+  id               Int       @id @default(1)
+  mode             String    @default("manual") @db.VarChar(50)
+  desiredState     String    @default("off") @map("desired_state") @db.VarChar(50)
+  actualState      String    @default("off") @map("actual_state") @db.VarChar(50)
+  scheduleTime     DateTime? @map("schedule_time") @db.Time()
+  scheduleStopTime DateTime? @map("schedule_stop_time") @db.Time()
+  lastHeartbeat    DateTime? @map("last_heartbeat")
+  lastUpdated      DateTime  @default(now()) @map("last_updated")
+  configVersion    Int       @default(0) @map("config_version")
+  ackConfigVersion Int       @default(0) @map("ack_config_version")
+
+  @@map("solar_panel_control")
+}
+
+model SolarPanelStatus {
+  id        Int      @id @default(autoincrement())
+  voltage   Float?
+  current   Float?
+  power     Float?
+  timestamp DateTime @default(now())
+
+  @@map("solar_panel_status")
+}
+
+// ── Misc ─────────────────────────────────────────────
+
+model SmsMessage {
+  id        Int      @id @default(autoincrement())
+  sender    String?
+  message   String?  @db.Text
+  timestamp DateTime @default(now())
+
+  @@map("sms_messages")
+}
+
+model SystemState {
+  id    Int    @id @default(1)
+  key   String @unique @db.VarChar(100)
+  value String @db.Text
+
+  @@map("system_state")
+}
