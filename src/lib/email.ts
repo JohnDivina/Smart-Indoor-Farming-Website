@@ -1,15 +1,28 @@
 import nodemailer from 'nodemailer';
 
-const user = process.env.GMAIL_USER;
-const pass = process.env.GMAIL_APP_PASSWORD;
+function getTransporter() {
+  const user = (process.env.GMAIL_USER || process.env.SMTP_USER || '').trim();
+  let pass = (process.env.GMAIL_APP_PASSWORD || process.env.SMTP_PASSWORD || process.env.SMTP_PASS || '').trim();
+  // Strip all whitespace from Google App Passwords (e.g. 'xxxx yyyy zzzz wwww' -> 'xxxxyyyyzzzzwwww')
+  pass = pass.replace(/\s+/g, '');
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: user || '',
-    pass: pass || '',
-  },
-});
+  if (!user || !pass) {
+    return null;
+  }
+
+  return {
+    user,
+    transporter: nodemailer.createTransport({
+      host: process.env.SMTP_HOST || 'smtp.gmail.com',
+      port: Number(process.env.SMTP_PORT) || 465,
+      secure: process.env.SMTP_SECURE === 'true' || (Number(process.env.SMTP_PORT) || 465) === 465,
+      auth: {
+        user,
+        pass,
+      },
+    }),
+  };
+}
 
 interface SendOTPEmailParams {
   toEmail: string;
@@ -77,8 +90,10 @@ export async function sendOTPEmail({
     </html>
   `;
 
+  const transportConfig = getTransporter();
+
   // Fallback in case Gmail credentials are not configured yet during dev/testing
-  if (!user || !pass) {
+  if (!transportConfig) {
     console.log(`\n========================================`);
     console.log(`[SMTP DEV SIMULATION] OTP Email to ${toEmail}`);
     console.log(`Username: ${username} | Reason: ${reason}`);
@@ -91,8 +106,8 @@ export async function sendOTPEmail({
   }
 
   try {
-    await transporter.sendMail({
-      from: `"CLSU Smart Farm" <${user}>`,
+    await transportConfig.transporter.sendMail({
+      from: `"CLSU Smart Farm" <${transportConfig.user}>`,
       to: toEmail,
       subject: `[CLSU Smart Farm] ${title} - ${otp}`,
       html: htmlContent,

@@ -26,12 +26,12 @@ export async function POST(req: NextRequest) {
 
     const { username, email, phonenumber, password } = parseResult.data;
 
-    // Check if user already exists
+    // Check if user already exists (case-insensitive for username/email)
     const existingUser = await prisma.user.findFirst({
       where: {
         OR: [
-          { username },
-          { email },
+          { username: { equals: username, mode: 'insensitive' } },
+          { email: { equals: email, mode: 'insensitive' } },
           { phonenumber },
         ],
       },

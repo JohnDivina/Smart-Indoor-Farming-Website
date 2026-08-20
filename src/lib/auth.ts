@@ -56,12 +56,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           throw new Error('Please provide both username/email and password.');
         }
 
-        // 2. Find user by username, email, or phonenumber
+        // 2. Find user by username, email, or phonenumber (case-insensitive for username and email)
         const user = await prisma.user.findFirst({
           where: {
             OR: [
-              { username: identifier },
-              { email: identifier },
+              { username: { equals: identifier, mode: 'insensitive' } },
+              { email: { equals: identifier, mode: 'insensitive' } },
               { phonenumber: identifier },
             ],
           },

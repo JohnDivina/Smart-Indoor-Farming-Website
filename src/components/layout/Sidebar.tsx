@@ -99,6 +99,20 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
     },
     {
       type: 'link',
+      label: 'Contact Us',
+      href: '/contact',
+      icon: <FaCircleInfo />,
+      locked: false,
+    },
+    {
+      type: 'link',
+      label: 'Help & Docs',
+      href: '/help',
+      icon: <FaCircleInfo />,
+      locked: false,
+    },
+    {
+      type: 'link',
       label: 'Settings',
       href: '/settings',
       icon: <FaGear />,

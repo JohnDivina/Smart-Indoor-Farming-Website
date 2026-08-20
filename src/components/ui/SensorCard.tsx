@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import GlassPanel from './GlassPanel';
 import StatusBadge from './StatusBadge';
+import AnimatedNumber from '@/components/motion/AnimatedNumber';
 import { FaChevronRight } from 'react-icons/fa6';
 
 interface SensorCardProps {
@@ -19,6 +20,7 @@ interface SensorCardProps {
   isGuestLocked?: boolean;
   onLockedClick?: () => void;
   accentColor?: string;
+  decimals?: number;
 }
 
 export const SensorCard: React.FC<SensorCardProps> = ({
@@ -36,7 +38,10 @@ export const SensorCard: React.FC<SensorCardProps> = ({
   isGuestLocked = false,
   onLockedClick,
   accentColor,
+  decimals = 1,
 }) => {
+  const isNumeric = typeof value === 'number' || (!isNaN(parseFloat(value as string)) && isFinite(value as any));
+
   const content = (
     <GlassPanel
       hoverable
@@ -49,6 +54,7 @@ export const SensorCard: React.FC<SensorCardProps> = ({
         height: '100%',
         position: 'relative',
         cursor: 'pointer',
+        transition: 'transform var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out)',
       }}
       onClick={isGuestLocked ? onLockedClick : undefined}
     >
@@ -97,7 +103,11 @@ export const SensorCard: React.FC<SensorCardProps> = ({
             lineHeight: 1,
           }}
         >
-          {value}
+          {isNumeric && typeof value !== 'string' ? (
+            <AnimatedNumber value={value} decimals={decimals} />
+          ) : (
+            value
+          )}
         </span>
         {unit && (
           <span style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-secondary)' }}>

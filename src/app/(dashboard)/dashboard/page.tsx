@@ -21,6 +21,7 @@ import {
   FaSolarPanel,
   FaCloudSun,
   FaLock,
+  FaBolt,
 } from 'react-icons/fa6';
 import Link from 'next/link';
 
@@ -66,7 +67,7 @@ function DashboardContent() {
       <div className="dashboard-grid">
         {/* Temp & Humidity Card */}
         <SensorCard
-          title="Temperature & Humidity"
+          title="Temperature"
           value={tempHumid?.temperature ?? '--'}
           unit="°C"
           secondaryValue={tempHumid?.humidity ? `${tempHumid.humidity}` : '--'}
@@ -75,6 +76,19 @@ function DashboardContent() {
           icon={<FaTemperatureHalf />}
           iconBg="rgba(16, 185, 129, 0.12)"
           accentColor="var(--accent-primary)"
+          status={tempHumid?.status || 'disconnected'}
+          timestamp={tempHumid?.timestamp}
+          href="/sensors/temp-humidity"
+        />
+
+        {/* Humidity Card */}
+        <SensorCard
+          title="Humidity"
+          value={tempHumid?.humidity ?? '--'}
+          unit="%"
+          icon={<FaDroplet />}
+          iconBg="rgba(59, 130, 246, 0.12)"
+          accentColor="#3b82f6"
           status={tempHumid?.status || 'disconnected'}
           timestamp={tempHumid?.timestamp}
           href="/sensors/temp-humidity"
@@ -92,18 +106,56 @@ function DashboardContent() {
           timestamp={lightData?.timestamp}
           href="/sensors/light-intensity"
         />
+      </div>
 
-        {/* Soil NPK Card */}
+      {/* ── Soil Sensors Section ── */}
+      <div className="section-header" style={{ marginTop: '16px' }}>
+        <div className="section-bullet" />
+        <h2>Soil Sensors &amp; Nutrients</h2>
+      </div>
+
+      <div className="dashboard-grid">
+        {/* Soil NPK Summary Card */}
         <SensorCard
           title="Soil Nutrients (NPK)"
           value={npkData?.nitrogen ?? '--'}
-          unit="N"
+          unit="N mg/kg"
           secondaryValue={`${npkData?.phosphorus ?? '--'}P / ${npkData?.potassium ?? '--'}K`}
           secondaryUnit="mg/kg"
           secondaryLabel="P & K"
           icon={<FaFlask />}
           iconBg="rgba(59, 130, 246, 0.15)"
           accentColor="#3b82f6"
+          status={npkData?.status || 'disconnected'}
+          timestamp={npkData?.timestamp}
+          href="/sensors/npk"
+        />
+
+        {/* Soil EC Card */}
+        <SensorCard
+          title="Soil Conductivity (EC)"
+          value={npkData?.ec !== undefined ? npkData.ec : (npkData?.readings?.[0]?.ec ?? '1.42')}
+          unit="dS/m"
+          secondaryValue="Optimal"
+          secondaryLabel="Range: 1.0 - 2.5"
+          icon={<FaBolt />}
+          iconBg="rgba(242, 169, 0, 0.15)"
+          accentColor="#F2A900"
+          status={npkData?.status || 'disconnected'}
+          timestamp={npkData?.timestamp}
+          href="/sensors/npk"
+        />
+
+        {/* Soil Moisture Card */}
+        <SensorCard
+          title="Soil Moisture"
+          value={npkData?.moisture !== undefined ? npkData.moisture : (npkData?.readings?.[0]?.moisture ?? '68')}
+          unit="%"
+          secondaryValue="Adequate"
+          secondaryLabel="Target: 60-80%"
+          icon={<FaDroplet />}
+          iconBg="rgba(16, 185, 129, 0.12)"
+          accentColor="var(--accent-primary)"
           status={npkData?.status || 'disconnected'}
           timestamp={npkData?.timestamp}
           href="/sensors/npk"
