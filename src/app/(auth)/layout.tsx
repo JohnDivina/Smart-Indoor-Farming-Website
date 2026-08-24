@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import InteractiveParticles from '@/components/motion/InteractiveParticles';
 
 export default function AuthLayout({
   children,
@@ -15,8 +16,12 @@ export default function AuthLayout({
         justifyContent: 'center',
         padding: '24px 16px',
         position: 'relative',
+        overflow: 'hidden',
       }}
     >
+      {/* Interactive Floating Particles with Magnetic Cursor Gravity */}
+      <InteractiveParticles particleCount={70} connectionDistance={130} mouseRadius={180} />
+
       {/* Decorative background glow circles */}
       <div
         style={{
