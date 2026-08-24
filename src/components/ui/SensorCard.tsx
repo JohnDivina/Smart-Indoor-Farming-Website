@@ -103,7 +103,7 @@ export const SensorCard: React.FC<SensorCardProps> = ({
             lineHeight: 1,
           }}
         >
-          {isNumeric && typeof value !== 'string' ? (
+          {isNumeric ? (
             <AnimatedNumber value={value} decimals={decimals} />
           ) : (
             value

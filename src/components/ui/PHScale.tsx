@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import AnimatedNumber from '@/components/motion/AnimatedNumber';
 
 interface PHScaleProps {
   value: number | string;
@@ -30,7 +31,7 @@ export default function PHScale({ value, min = 0, max = 14 }: PHScaleProps) {
             Soil pH Assessment
           </span>
           <h4 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-primary)', marginTop: '2px' }}>
-            {isNaN(numericValue) ? '--' : numericValue.toFixed(1)} pH &bull;{' '}
+            <AnimatedNumber value={numericValue} decimals={1} suffix=" pH" /> &bull;{' '}
             <span style={{ color: category.color }}>{category.label}</span>
           </h4>
         </div>
