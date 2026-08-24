@@ -7,7 +7,11 @@ export const metadata: Metadata = {
   title: 'CLSU Smart Indoor Farming Dashboard',
   description: 'Smart indoor precision agriculture monitoring, sensor tracking, and environmental automated controls for CLSU.',
   icons: {
-    icon: '/assets/clsu-official-logo.png',
+    icon: [
+      { url: '/assets/clsu-official-logo.png', type: 'image/png' },
+      { url: '/favicon.ico' },
+    ],
+    shortcut: '/assets/clsu-official-logo.png',
     apple: '/assets/clsu-official-logo.png',
   },
 };
@@ -21,6 +25,8 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" type="image/png" href="/assets/clsu-official-logo.png" />
+        <link rel="shortcut icon" href="/assets/clsu-official-logo.png" />
+        <link rel="apple-touch-icon" href="/assets/clsu-official-logo.png" />
       </head>
       <body>
         <SessionProvider>
