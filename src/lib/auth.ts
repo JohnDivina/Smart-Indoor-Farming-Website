@@ -7,6 +7,7 @@ import prisma from '@/lib/prisma';
 import { verifyTotpToken } from '@/lib/totp';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || 'smartfarm3-super-secure-jwt-secret-key-development-mode',
   trustHost: true,
   session: {
     strategy: 'jwt',
@@ -22,6 +23,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            allowDangerousEmailAccountLinking: true,
           }),
         ]
       : []),
@@ -219,6 +221,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.username = (user as any).username || user.name || token.username || '';
         token.phonenumber = (user as any).phonenumber;
         token.isGuest = (user as any).isGuest ?? false;
+      }
+      if (token.email && (!token.id || isNaN(Number(token.id)))) {
+        try {
+          const dbUser = await prisma.user.findFirst({
+            where: { email: { equals: token.email, mode: 'insensitive' } },
+            select: { id: true, username: true, phonenumber: true },
+          });
+          if (dbUser) {
+            token.id = String(dbUser.id);
+            token.username = dbUser.username;
+            token.phonenumber = dbUser.phonenumber || undefined;
+            token.isGuest = false;
+          }
+        } catch (e) {
+          console.warn('JWT user lookup fallback error:', e);
+        }
       }
       return token;
     },

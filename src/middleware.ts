@@ -36,11 +36,29 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // 3. Get JWT token
-  const token = await getToken({
-    req,
-    secret: process.env.NEXTAUTH_SECRET || 'smartfarm3-super-secure-jwt-secret-key-development-mode',
-  });
+  // 3. Get JWT token with HTTPS & NextAuth v5 cookie name support
+  const secret =
+    process.env.AUTH_SECRET ||
+    process.env.NEXTAUTH_SECRET ||
+    'smartfarm3-super-secure-jwt-secret-key-development-mode';
+
+  let token = await getToken({ req, secret });
+
+  if (!token) {
+    const isHttps = req.nextUrl.protocol === 'https:' || req.headers.get('x-forwarded-proto') === 'https';
+    if (isHttps) {
+      token = await getToken({ req, secret, secureCookie: true });
+    }
+  }
+  if (!token) {
+    token = await getToken({ req, secret, cookieName: '__Secure-authjs.session-token' });
+  }
+  if (!token) {
+    token = await getToken({ req, secret, cookieName: 'authjs.session-token' });
+  }
+  if (!token) {
+    token = await getToken({ req, secret, cookieName: '__Secure-next-auth.session-token' });
+  }
 
   const isAuthenticated = Boolean(token);
 
