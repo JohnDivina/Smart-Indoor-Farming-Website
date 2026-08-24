@@ -26,8 +26,8 @@ export default function InteractiveParticles({
   className,
   style,
   particleCount = 55,
-  connectionDistance = 95,
-  mouseRadius = 80, // Tight proximity threshold for cursor connection
+  connectionDistance = 100,
+  mouseRadius = 90, // Connection threshold to cursor
 }: InteractiveParticlesProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -39,14 +39,8 @@ export default function InteractiveParticles({
     if (!ctx) return;
 
     let animationFrameId: number;
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
-
-    // High-DPI support for sharp rendering
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = width * dpr;
-    canvas.height = height * dpr;
-    ctx.scale(dpr, dpr);
+    let width = window.innerWidth;
+    let height = window.innerHeight;
 
     const mouse = {
       x: -9999,
@@ -54,11 +48,11 @@ export default function InteractiveParticles({
       isActive: false,
     };
 
-    // Color palette: Smart Farm Emeralds, Limes & Solar Gold
+    // Color palette: Smart Farm Emeralds, Limes & Solar Amber Gold
     const colors = [
-      { fill: 'rgba(16, 185, 129, ', glow: 'rgba(16, 185, 129, 0.45)' },
-      { fill: 'rgba(34, 197, 94, ', glow: 'rgba(34, 197, 94, 0.45)' },
-      { fill: 'rgba(242, 169, 0, ', glow: 'rgba(242, 169, 0, 0.4)' },
+      { fill: 'rgba(16, 185, 129, ', glow: 'rgba(16, 185, 129, 0.5)' },
+      { fill: 'rgba(34, 197, 94, ', glow: 'rgba(34, 197, 94, 0.5)' },
+      { fill: 'rgba(242, 169, 0, ', glow: 'rgba(242, 169, 0, 0.45)' },
     ];
 
     const actualCount = width < 768 ? Math.floor(particleCount * 0.5) : particleCount;
@@ -66,7 +60,7 @@ export default function InteractiveParticles({
     const particles: Particle[] = [];
     for (let i = 0; i < actualCount; i++) {
       const palette = colors[Math.floor(Math.random() * colors.length)];
-      const baseAlpha = Math.random() * 0.45 + 0.25;
+      const baseAlpha = Math.random() * 0.4 + 0.25;
       const x = Math.random() * width;
       const y = Math.random() * height;
 
@@ -83,17 +77,35 @@ export default function InteractiveParticles({
       });
     }
 
-    const handleResize = () => {
+    const updateDimensions = () => {
       if (!canvas) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       width = window.innerWidth;
       height = window.innerHeight;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
+
+      // Match internal canvas buffer exactly with physical pixels
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+
+      // Force explicit CSS viewport bounds to prevent any flex/padding offset
+      canvas.style.position = 'fixed';
+      canvas.style.left = '0px';
+      canvas.style.top = '0px';
+      canvas.style.width = '100vw';
+      canvas.style.height = '100vh';
+      canvas.style.margin = '0px';
+      canvas.style.padding = '0px';
+
+      // Scale context so JavaScript coordinates match 1:1 with CSS pixels
+      ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset transform matrix
       ctx.scale(dpr, dpr);
     };
 
+    updateDimensions();
+
     const handleMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
+      // Mathematically calibrated to viewport CSS pixels
       mouse.x = e.clientX - rect.left;
       mouse.y = e.clientY - rect.top;
       mouse.isActive = true;
@@ -120,7 +132,7 @@ export default function InteractiveParticles({
       mouse.y = -9999;
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', updateDimensions);
     window.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseleave', handleMouseLeave);
     window.addEventListener('touchmove', handleTouchMove, { passive: true });
@@ -132,13 +144,13 @@ export default function InteractiveParticles({
       time += 0.015;
       ctx.clearRect(0, 0, width, height);
 
-      // Draw soft cursor point indicator
+      // ── Draw Cursor Anchor Point when active ──
       if (mouse.isActive && mouse.x > 0 && mouse.y > 0) {
         ctx.beginPath();
-        ctx.arc(mouse.x, mouse.y, 2, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(16, 185, 129, 0.4)';
-        ctx.shadowBlur = 6;
-        ctx.shadowColor = 'rgba(16, 185, 129, 0.6)';
+        ctx.arc(mouse.x, mouse.y, 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(16, 185, 129, 0.7)';
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = 'rgba(16, 185, 129, 0.9)';
         ctx.fill();
         ctx.shadowBlur = 0;
       }
@@ -160,14 +172,14 @@ export default function InteractiveParticles({
         if (p.y < 0) { p.y = 0; p.vy *= -1; }
         if (p.y > height) { p.y = height; p.vy *= -1; }
 
-        // ── Cursor Attachment Web (ONLY within tight radius) ──
+        // ── Connect Cursor to Nearby Particles (Exact Anchor) ──
         if (mouse.isActive && mouse.x > 0 && mouse.y > 0) {
           const dx = mouse.x - p.x;
           const dy = mouse.y - p.y;
           const dist = Math.hypot(dx, dy);
 
           if (dist < mouseRadius) {
-            const lineAlpha = (1 - dist / mouseRadius) * 0.45;
+            const lineAlpha = (1 - dist / mouseRadius) * 0.5;
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(mouse.x, mouse.y);
@@ -210,7 +222,7 @@ export default function InteractiveParticles({
 
     return () => {
       cancelAnimationFrame(animationFrameId);
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('resize', updateDimensions);
       window.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseleave', handleMouseLeave);
       window.removeEventListener('touchmove', handleTouchMove);
@@ -224,9 +236,14 @@ export default function InteractiveParticles({
       className={className}
       style={{
         position: 'fixed',
-        inset: 0,
+        left: 0,
+        top: 0,
+        width: '100vw',
+        height: '100vh',
         pointerEvents: 'none',
         zIndex: 0,
+        margin: 0,
+        padding: 0,
         ...style,
       }}
     />
