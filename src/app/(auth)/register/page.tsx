@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import GlassPanel from '@/components/ui/GlassPanel';
-import { FaUserPlus, FaEye, FaEyeSlash, FaCheck, FaGoogle } from 'react-icons/fa6';
+import { FaUserPlus, FaEye, FaEyeSlash, FaCheck, FaGoogle, FaShieldHalved, FaArrowsRotate } from 'react-icons/fa6';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -19,8 +19,33 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
 
+  // CAPTCHA State
+  const [captchaData, setCaptchaData] = useState<{ svg: string; token: string } | null>(null);
+  const [captchaAnswer, setCaptchaAnswer] = useState('');
+  const [captchaLoading, setCaptchaLoading] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const fetchCaptcha = async () => {
+    setCaptchaLoading(true);
+    try {
+      const res = await fetch('/api/auth/captcha');
+      const data = await res.json();
+      if (data.success) {
+        setCaptchaData({ svg: data.svg, token: data.token });
+        setCaptchaAnswer('');
+      }
+    } catch (e) {
+      console.warn('Failed to load CAPTCHA:', e);
+    } finally {
+      setCaptchaLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCaptcha();
+  }, []);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,6 +61,11 @@ export default function RegisterPage() {
       return;
     }
 
+    if (!captchaAnswer || captchaAnswer.trim().length === 0) {
+      setError('Please enter the security verification code shown.');
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -48,6 +78,8 @@ export default function RegisterPage() {
           phonenumber,
           password,
           confirmPassword,
+          captchaToken: captchaData?.token,
+          captchaAnswer: captchaAnswer.trim(),
         }),
       });
 
@@ -55,6 +87,7 @@ export default function RegisterPage() {
 
       if (!res.ok || !data.success) {
         setError(data.message || 'Registration failed. Please check your details.');
+        fetchCaptcha(); // Refresh CAPTCHA on error
         setLoading(false);
         return;
       }
@@ -64,6 +97,7 @@ export default function RegisterPage() {
       router.push(`/verify-otp?userId=${data.userId}&email=${encodeURIComponent(email)}&reason=account_creation${devParam}`);
     } catch (err: any) {
       setError(err?.message || 'A network error occurred. Please try again.');
+      fetchCaptcha();
       setLoading(false);
     }
   };
@@ -210,6 +244,77 @@ export default function RegisterPage() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
+            </div>
+          </div>
+
+          {/* Security CAPTCHA Box */}
+          <div
+            style={{
+              margin: '18px 0 16px',
+              padding: '16px 18px',
+              borderRadius: '14px',
+              background: 'var(--glass-bg-subtle)',
+              border: '1px solid var(--glass-border)',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+              <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <FaShieldHalved style={{ color: 'var(--accent-primary)' }} />
+                Security Verification (CAPTCHA)
+              </span>
+              <button
+                type="button"
+                onClick={fetchCaptcha}
+                disabled={captchaLoading}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--accent-primary)',
+                  fontSize: '0.78rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                }}
+                title="Generate a new security code"
+              >
+                <FaArrowsRotate className={captchaLoading ? 'fa-spin' : ''} />
+                <span>New Code</span>
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
+              {/* SVG Image Box */}
+              <div
+                dangerouslySetInnerHTML={{
+                  __html:
+                    captchaData?.svg ||
+                    '<div style="width:160px;height:48px;background:rgba(0,0,0,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#888;">Loading...</div>',
+                }}
+                style={{ flexShrink: 0 }}
+              />
+
+              <div style={{ flex: 1, minWidth: '140px' }}>
+                <input
+                  type="text"
+                  className="form-input"
+                  placeholder="Enter code"
+                  value={captchaAnswer}
+                  onChange={(e) => setCaptchaAnswer(e.target.value.toUpperCase())}
+                  maxLength={6}
+                  required
+                  autoComplete="off"
+                  spellCheck="false"
+                  style={{
+                    letterSpacing: '3px',
+                    fontWeight: 800,
+                    textTransform: 'uppercase',
+                    fontSize: '1.05rem',
+                    textAlign: 'center',
+                  }}
+                />
+              </div>
             </div>
           </div>
 

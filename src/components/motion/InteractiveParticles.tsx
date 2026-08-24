@@ -5,8 +5,6 @@ import React, { useEffect, useRef } from 'react';
 interface Particle {
   x: number;
   y: number;
-  originX: number;
-  originY: number;
   vx: number;
   vy: number;
   radius: number;
@@ -14,7 +12,6 @@ interface Particle {
   glowColor: string;
   alpha: number;
   baseAlpha: number;
-  pulseSpeed: number;
 }
 
 interface InteractiveParticlesProps {
@@ -28,9 +25,9 @@ interface InteractiveParticlesProps {
 export default function InteractiveParticles({
   className,
   style,
-  particleCount = 65,
-  connectionDistance = 120,
-  mouseRadius = 160,
+  particleCount = 55,
+  connectionDistance = 110,
+  mouseRadius = 95, // Tight proximity threshold
 }: InteractiveParticlesProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -52,43 +49,37 @@ export default function InteractiveParticles({
     ctx.scale(dpr, dpr);
 
     const mouse = {
-      x: -1000,
-      y: -1000,
-      targetX: -1000,
-      targetY: -1000,
+      x: -9999,
+      y: -9999,
       isActive: false,
     };
 
     // Color palette: Smart Farm Emeralds, Limes & Solar Amber Gold
     const colors = [
-      { fill: 'rgba(16, 185, 129, ', glow: 'rgba(16, 185, 129, 0.4)' },
-      { fill: 'rgba(34, 197, 94, ', glow: 'rgba(34, 197, 94, 0.4)' },
-      { fill: 'rgba(242, 169, 0, ', glow: 'rgba(242, 169, 0, 0.4)' },
-      { fill: 'rgba(59, 130, 246, ', glow: 'rgba(59, 130, 246, 0.3)' },
+      { fill: 'rgba(16, 185, 129, ', glow: 'rgba(16, 185, 129, 0.5)' },
+      { fill: 'rgba(34, 197, 94, ', glow: 'rgba(34, 197, 94, 0.5)' },
+      { fill: 'rgba(242, 169, 0, ', glow: 'rgba(242, 169, 0, 0.45)' },
     ];
 
-    const actualCount = width < 768 ? Math.floor(particleCount * 0.5) : particleCount;
+    const actualCount = width < 768 ? Math.floor(particleCount * 0.45) : particleCount;
 
     const particles: Particle[] = [];
     for (let i = 0; i < actualCount; i++) {
       const palette = colors[Math.floor(Math.random() * colors.length)];
-      const baseAlpha = Math.random() * 0.45 + 0.25;
+      const baseAlpha = Math.random() * 0.4 + 0.2;
       const x = Math.random() * width;
       const y = Math.random() * height;
 
       particles.push({
         x,
         y,
-        originX: x,
-        originY: y,
-        vx: (Math.random() - 0.5) * 0.6,
-        vy: (Math.random() - 0.5) * 0.6,
-        radius: Math.random() * 1.8 + 1.2,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        radius: Math.random() * 1.5 + 1.2,
         color: palette.fill,
         glowColor: palette.glow,
         alpha: baseAlpha,
         baseAlpha,
-        pulseSpeed: Math.random() * 0.02 + 0.01,
       });
     }
 
@@ -103,30 +94,30 @@ export default function InteractiveParticles({
 
     const handleMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
-      mouse.targetX = e.clientX - rect.left;
-      mouse.targetY = e.clientY - rect.top;
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
       mouse.isActive = true;
     };
 
     const handleMouseLeave = () => {
       mouse.isActive = false;
-      mouse.targetX = -1000;
-      mouse.targetY = -1000;
+      mouse.x = -9999;
+      mouse.y = -9999;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
       if (e.touches.length > 0) {
         const rect = canvas.getBoundingClientRect();
-        mouse.targetX = e.touches[0].clientX - rect.left;
-        mouse.targetY = e.touches[0].clientY - rect.top;
+        mouse.x = e.touches[0].clientX - rect.left;
+        mouse.y = e.touches[0].clientY - rect.top;
         mouse.isActive = true;
       }
     };
 
     const handleTouchEnd = () => {
       mouse.isActive = false;
-      mouse.targetX = -1000;
-      mouse.targetY = -1000;
+      mouse.x = -9999;
+      mouse.y = -9999;
     };
 
     window.addEventListener('resize', handleResize);
@@ -138,64 +129,59 @@ export default function InteractiveParticles({
     // Animation Loop
     let time = 0;
     const render = () => {
-      time += 0.02;
+      time += 0.015;
       ctx.clearRect(0, 0, width, height);
-
-      // Smooth mouse interpolation (magnetic dampening)
-      if (mouse.isActive) {
-        mouse.x += (mouse.targetX - mouse.x) * 0.15;
-        mouse.y += (mouse.targetY - mouse.y) * 0.15;
-      } else {
-        mouse.x = -1000;
-        mouse.y = -1000;
-      }
 
       // Update & Draw Particles
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
 
         // Organic subtle floating pulse
-        p.alpha = p.baseAlpha + Math.sin(time + i) * 0.15;
+        p.alpha = p.baseAlpha + Math.sin(time + i * 0.5) * 0.12;
 
         // Normal drift movement
         p.x += p.vx;
         p.y += p.vy;
 
         // Screen boundary bounce
-        if (p.x < 0 || p.x > width) p.vx *= -1;
-        if (p.y < 0 || p.y > height) p.vy *= -1;
+        if (p.x < 0) { p.x = 0; p.vx *= -1; }
+        if (p.x > width) { p.x = width; p.vx *= -1; }
+        if (p.y < 0) { p.y = 0; p.vy *= -1; }
+        if (p.y > height) { p.y = height; p.vy *= -1; }
 
-        // ── Magnetic Mouse Attachment & Attraction ──
-        if (mouse.isActive) {
+        // ── Precise Magnetic Mouse Attraction (ONLY within close radius) ──
+        if (mouse.isActive && mouse.x > 0 && mouse.y > 0) {
           const dx = mouse.x - p.x;
           const dy = mouse.y - p.y;
           const dist = Math.hypot(dx, dy);
 
-          if (dist < mouseRadius) {
-            // Gravitational pull towards cursor
-            const force = (1 - dist / mouseRadius) * 0.06;
-            p.x += dx * force;
-            p.y += dy * force;
+          // Strictly act only when distance is within mouseRadius
+          if (dist < mouseRadius && dist > 1) {
+            const pullFactor = (1 - dist / mouseRadius);
+            
+            // Subtle gentle pull towards cursor
+            p.x += (dx / dist) * pullFactor * 1.2;
+            p.y += (dy / dist) * pullFactor * 1.2;
 
-            // Draw elastic connection line from particle to cursor
-            const lineAlpha = (1 - dist / mouseRadius) * 0.55;
+            // Draw crisp connection thread
+            const lineAlpha = pullFactor * 0.6;
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(mouse.x, mouse.y);
             ctx.strokeStyle = `rgba(16, 185, 129, ${lineAlpha})`;
-            ctx.lineWidth = 1.2;
+            ctx.lineWidth = 1;
             ctx.stroke();
           }
         }
 
-        // Draw particle dot with soft outer bloom
+        // Draw particle dot with soft glow
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         ctx.fillStyle = `${p.color}${Math.max(0.1, p.alpha)})`;
-        ctx.shadowBlur = 8;
+        ctx.shadowBlur = 6;
         ctx.shadowColor = p.glowColor;
         ctx.fill();
-        ctx.shadowBlur = 0; // Reset
+        ctx.shadowBlur = 0;
 
         // ── Connect Nearby Particles (Constellation mesh) ──
         for (let j = i + 1; j < particles.length; j++) {
@@ -203,12 +189,12 @@ export default function InteractiveParticles({
           const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
 
           if (dist < connectionDistance) {
-            const lineAlpha = (1 - dist / connectionDistance) * 0.22;
+            const lineAlpha = (1 - dist / connectionDistance) * 0.18;
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
             ctx.strokeStyle = `rgba(16, 185, 129, ${lineAlpha})`;
-            ctx.lineWidth = 0.8;
+            ctx.lineWidth = 0.75;
             ctx.stroke();
           }
         }

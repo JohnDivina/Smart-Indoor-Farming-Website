@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma';
 import { registerSchema } from '@/lib/validators';
 import { sendOTPEmail } from '@/lib/email';
 import { authLimiter } from '@/lib/rate-limit';
+import { verifyCaptcha } from '@/lib/captcha';
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,6 +18,16 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
+
+    // 1. Validate Security CAPTCHA
+    const { captchaToken, captchaAnswer } = body;
+    if (!captchaToken || !captchaAnswer || !verifyCaptcha(captchaAnswer, captchaToken)) {
+      return NextResponse.json(
+        { success: false, message: 'Security CAPTCHA verification failed or expired. Please enter the characters shown.' },
+        { status: 400 }
+      );
+    }
+
     const parseResult = registerSchema.safeParse(body);
 
     if (!parseResult.success) {
