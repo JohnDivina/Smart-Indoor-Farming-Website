@@ -92,16 +92,17 @@ export async function sendOTPEmail({
 
   const transportConfig = getTransporter();
 
-  // Fallback in case Gmail credentials are not configured yet during dev/testing
+  // Fallback in case Gmail credentials are not configured yet
   if (!transportConfig) {
-    console.log(`\n========================================`);
-    console.log(`[SMTP DEV SIMULATION] OTP Email to ${toEmail}`);
-    console.log(`Username: ${username} | Reason: ${reason}`);
-    console.log(`Verification OTP Code: ${otp}`);
-    console.log(`========================================\n`);
+    console.warn(`\n========================================`);
+    console.warn(`[SMTP NOT CONFIGURED] OTP Email to ${toEmail}`);
+    console.warn(`Username: ${username} | Reason: ${reason}`);
+    console.warn(`Verification OTP Code: ${otp}`);
+    console.warn(`To send actual emails, configure GMAIL_USER and GMAIL_APP_PASSWORD in environment variables.`);
+    console.warn(`========================================\n`);
     return {
-      success: true,
-      message: 'OTP generated (logged to server console in dev mode).',
+      success: false,
+      message: 'SMTP credentials (GMAIL_USER / GMAIL_APP_PASSWORD) not configured on server.',
     };
   }
 

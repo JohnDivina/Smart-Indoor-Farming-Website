@@ -30,7 +30,10 @@ export default function RegisterPage() {
   const fetchCaptcha = async () => {
     setCaptchaLoading(true);
     try {
-      const res = await fetch('/api/auth/captcha');
+      const res = await fetch(`/api/auth/captcha?t=${Date.now()}`, {
+        cache: 'no-store',
+        headers: { 'Cache-Control': 'no-cache' },
+      });
       const data = await res.json();
       if (data.success) {
         setCaptchaData({ svg: data.svg, token: data.token });

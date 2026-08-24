@@ -20,7 +20,7 @@ export default function AuthLayout({
       }}
     >
       {/* Interactive Floating Particles with Magnetic Cursor Gravity */}
-      <InteractiveParticles particleCount={70} connectionDistance={130} mouseRadius={180} />
+      <InteractiveParticles particleCount={55} connectionDistance={95} mouseRadius={80} />
 
       {/* Decorative background glow circles */}
       <div

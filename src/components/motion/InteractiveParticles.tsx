@@ -25,9 +25,9 @@ interface InteractiveParticlesProps {
 export default function InteractiveParticles({
   className,
   style,
-  particleCount = 60,
-  connectionDistance = 120,
-  mouseRadius = 130, // Proximity for connecting lines to cursor
+  particleCount = 55,
+  connectionDistance = 95,
+  mouseRadius = 80, // Tight proximity threshold for cursor connection
 }: InteractiveParticlesProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -73,9 +73,9 @@ export default function InteractiveParticles({
       particles.push({
         x,
         y,
-        vx: (Math.random() - 0.5) * 0.55,
-        vy: (Math.random() - 0.5) * 0.55,
-        radius: Math.random() * 1.6 + 1.2,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        radius: Math.random() * 1.5 + 1.2,
         color: palette.fill,
         glowColor: palette.glow,
         alpha: baseAlpha,
@@ -132,6 +132,17 @@ export default function InteractiveParticles({
       time += 0.015;
       ctx.clearRect(0, 0, width, height);
 
+      // Draw soft cursor point indicator
+      if (mouse.isActive && mouse.x > 0 && mouse.y > 0) {
+        ctx.beginPath();
+        ctx.arc(mouse.x, mouse.y, 2, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(16, 185, 129, 0.4)';
+        ctx.shadowBlur = 6;
+        ctx.shadowColor = 'rgba(16, 185, 129, 0.6)';
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
       // Update & Draw Particles
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
@@ -149,14 +160,14 @@ export default function InteractiveParticles({
         if (p.y < 0) { p.y = 0; p.vy *= -1; }
         if (p.y > height) { p.y = height; p.vy *= -1; }
 
-        // ── Cursor Attachment Web (Attaches connecting lines to cursor on hover) ──
+        // ── Cursor Attachment Web (ONLY within tight radius) ──
         if (mouse.isActive && mouse.x > 0 && mouse.y > 0) {
           const dx = mouse.x - p.x;
           const dy = mouse.y - p.y;
           const dist = Math.hypot(dx, dy);
 
           if (dist < mouseRadius) {
-            const lineAlpha = (1 - dist / mouseRadius) * 0.42;
+            const lineAlpha = (1 - dist / mouseRadius) * 0.45;
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(mouse.x, mouse.y);
@@ -181,12 +192,12 @@ export default function InteractiveParticles({
           const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
 
           if (dist < connectionDistance) {
-            const lineAlpha = (1 - dist / connectionDistance) * 0.18;
+            const lineAlpha = (1 - dist / connectionDistance) * 0.16;
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
             ctx.strokeStyle = `rgba(16, 185, 129, ${lineAlpha})`;
-            ctx.lineWidth = 0.75;
+            ctx.lineWidth = 0.7;
             ctx.stroke();
           }
         }
