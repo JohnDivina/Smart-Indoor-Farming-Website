@@ -175,8 +175,31 @@ function LoginFormContent() {
           </div>
         )}
 
-        {/* Error Alert */}
-        {error && (
+        {/* Pending Approval Notice */}
+        {error && (error.includes('pending approval') || error.includes('awaiting approval')) ? (
+          <div
+            style={{
+              padding: '14px 18px',
+              borderRadius: '12px',
+              background: 'rgba(234, 179, 8, 0.12)',
+              color: '#fbbf24',
+              border: '1px solid rgba(234, 179, 8, 0.3)',
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              marginBottom: '20px',
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '12px',
+              lineHeight: 1.5,
+            }}
+          >
+            <span style={{ fontSize: '18px', marginTop: '2px', flexShrink: 0 }}>⏱️</span>
+            <div>
+              <div style={{ fontWeight: 700, color: '#fef08a', marginBottom: '2px' }}>Registration Received &bull; Pending Approval</div>
+              {error}
+            </div>
+          </div>
+        ) : error ? (
           <div
             style={{
               padding: '12px 16px',
@@ -192,7 +215,7 @@ function LoginFormContent() {
           >
             {error}
           </div>
-        )}
+        ) : null}
 
         <form onSubmit={handleLogin}>
           {!require2FA ? (
