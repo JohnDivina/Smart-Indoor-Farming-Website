@@ -7,6 +7,7 @@ interface AnimatedNumberProps {
   value: number | string;
   decimals?: number;
   className?: string;
+  style?: React.CSSProperties;
   prefix?: string;
   suffix?: string;
 }
@@ -15,15 +16,17 @@ export default function AnimatedNumber({
   value,
   decimals = 1,
   className,
+  style,
   prefix = '',
   suffix = '',
 }: AnimatedNumberProps) {
-  const numericValue = typeof value === 'number' ? value : parseFloat(value);
+  const numericValue = typeof value === 'number' ? value : parseFloat(String(value));
   const isInvalid = isNaN(numericValue);
 
+  // Hallmark Number Tick / Reveal Spring Physics
   const spring = useSpring(0, {
-    stiffness: 70,
-    damping: 18,
+    stiffness: 75,
+    damping: 16,
     mass: 0.8,
   });
 
@@ -35,12 +38,21 @@ export default function AnimatedNumber({
 
   const display = useTransform(spring, (current) => {
     if (isInvalid) return typeof value === 'string' ? value : '--';
-    return `${prefix}${current.toFixed(decimals)}${suffix}`;
+    const formatted = decimals === 0 ? Math.round(current).toString() : current.toFixed(decimals);
+    return `${prefix}${formatted}${suffix}`;
   });
 
   if (isInvalid) {
-    return <span className={className}>{typeof value === 'string' ? value : '--'}</span>;
+    return (
+      <span className={className} style={style} aria-live="polite">
+        {typeof value === 'string' ? value : '--'}
+      </span>
+    );
   }
 
-  return <motion.span className={className}>{display}</motion.span>;
+  return (
+    <motion.span className={className} style={style} aria-live="polite">
+      {display}
+    </motion.span>
+  );
 }

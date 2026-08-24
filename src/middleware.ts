@@ -85,7 +85,25 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  // If user is in guest mode and tries to access settings or admin actions
+  // 4. Role-based access control (RBAC) guards
+  const userRole = (token?.role as string) || (token?.isGuest ? 'guest' : 'viewer');
+
+  // Master Control: only master admin role allowed
+  if (pathname.startsWith('/master-control') || pathname.startsWith('/admin')) {
+    if (userRole !== 'admin') {
+      return NextResponse.redirect(new URL('/dashboard?restricted=admin_only', req.url));
+    }
+  }
+
+  // Hardware Controls (/controls/*): only admin and farm_manager allowed
+  if (pathname.startsWith('/controls/')) {
+    const canControlHardware = userRole === 'admin' || userRole === 'farm_manager';
+    if (!canControlHardware) {
+      return NextResponse.redirect(new URL('/dashboard?restricted=controls_only', req.url));
+    }
+  }
+
+  // Guest restriction for settings
   if (token?.isGuest && pathname.startsWith('/settings')) {
     return NextResponse.redirect(new URL('/dashboard?guest_restricted=1', req.url));
   }

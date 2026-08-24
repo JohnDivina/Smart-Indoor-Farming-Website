@@ -7,6 +7,9 @@ declare module 'next-auth' {
       username?: string;
       phonenumber?: string;
       isGuest?: boolean;
+      role?: string; // 'admin' | 'farm_manager' | 'farmer' | 'viewer'
+      authProvider?: string; // 'credentials' | 'google'
+      approved?: boolean;
     } & DefaultSession['user'];
   }
 
@@ -15,6 +18,9 @@ declare module 'next-auth' {
     username?: string;
     phonenumber?: string;
     isGuest?: boolean;
+    role?: string;
+    authProvider?: string;
+    approved?: boolean;
   }
 }
 
@@ -25,6 +31,9 @@ declare module '@auth/core/types' {
       username?: string;
       phonenumber?: string;
       isGuest?: boolean;
+      role?: string;
+      authProvider?: string;
+      approved?: boolean;
     } & DefaultSession['user'];
   }
 
@@ -33,6 +42,9 @@ declare module '@auth/core/types' {
     username?: string;
     phonenumber?: string;
     isGuest?: boolean;
+    role?: string;
+    authProvider?: string;
+    approved?: boolean;
   }
 }
 
@@ -42,5 +54,8 @@ declare module 'next-auth/jwt' {
     username?: string;
     phonenumber?: string;
     isGuest?: boolean;
+    role?: string;
+    authProvider?: string;
+    approved?: boolean;
   }
 }

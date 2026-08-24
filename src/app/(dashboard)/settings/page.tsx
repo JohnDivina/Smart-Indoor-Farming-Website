@@ -22,7 +22,15 @@ export default function SettingsPage() {
   const { data: session } = useSession();
 
   // Profile State
-  const [profile, setProfile] = useState({ username: '', email: '', phonenumber: '', totpEnabled: false, createdAt: '' });
+  const [profile, setProfile] = useState<{
+    username: string;
+    email: string;
+    phonenumber: string;
+    role?: string;
+    authProvider?: string;
+    totpEnabled: boolean;
+    createdAt: string;
+  }>({ username: '', email: '', phonenumber: '', totpEnabled: false, createdAt: '' });
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [profileMessage, setProfileMessage] = useState<string | null>(null);
   const [savingProfile, setSavingProfile] = useState(false);
@@ -33,6 +41,8 @@ export default function SettingsPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordMessage, setPasswordMessage] = useState<{ text: string; isError: boolean } | null>(null);
   const [savingPassword, setSavingPassword] = useState(false);
+
+  const isGoogleLinked = profile.authProvider === 'google';
 
   // 2FA State
   const [totpSetup, setTotpSetup] = useState<{ secret: string; qrCode: string } | null>(null);
@@ -105,11 +115,18 @@ export default function SettingsPage() {
       const res = await fetch('/api/user/password', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ currentPassword, newPassword, confirmPassword }),
+        body: JSON.stringify({
+          currentPassword: isGoogleLinked ? undefined : currentPassword,
+          newPassword,
+          confirmPassword,
+        }),
       });
       const data = await res.json();
       if (res.ok && data.success) {
-        setPasswordMessage({ text: 'Password changed successfully!', isError: false });
+        setPasswordMessage({
+          text: data.message || 'Password updated successfully!',
+          isError: false,
+        });
         setCurrentPassword('');
         setNewPassword('');
         setConfirmPassword('');
@@ -225,6 +242,13 @@ export default function SettingsPage() {
     }
   };
 
+  const getRoleTitle = (role?: string) => {
+    if (role === 'admin') return '👑 Master Administrator';
+    if (role === 'farm_manager') return '🛡️ Farm Manager';
+    if (role === 'farmer') return '🌾 Station Farmer';
+    return '👁️ Station Viewer';
+  };
+
   return (
     <>
       <Header
@@ -264,9 +288,14 @@ export default function SettingsPage() {
             <FaUser />
           </div>
           <div>
-            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#ffffff', marginBottom: '2px' }}>
-              {profile.username || 'System Administrator'}
-            </h2>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#ffffff', marginBottom: '2px' }}>
+                {profile.username || 'System Administrator'}
+              </h2>
+              <span style={{ fontSize: '0.78rem', padding: '3px 10px', borderRadius: '999px', background: 'rgba(0,0,0,0.25)', color: '#ffffff', fontWeight: 700 }}>
+                {getRoleTitle(profile.role)}
+              </span>
+            </div>
             <p style={{ fontSize: '0.88rem', color: 'rgba(255, 255, 255, 0.85)' }}>
               {profile.email} • Registered {profile.createdAt || 'CLSU Smart Farm'}
             </p>
@@ -359,8 +388,14 @@ export default function SettingsPage() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
             <FaKey style={{ color: '#F2A900', fontSize: '20px' }} />
             <div>
-              <h3 style={{ fontSize: '1.15rem', fontWeight: 700 }}>Security &amp; Password</h3>
-              <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Ensure your account uses a strong password</p>
+              <h3 style={{ fontSize: '1.15rem', fontWeight: 700 }}>
+                {isGoogleLinked ? 'Set Account Password (Google Linked)' : 'Security & Password'}
+              </h3>
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                {isGoogleLinked
+                  ? 'Your account is linked to Google OAuth. Set a password below if you want to also log in directly via email.'
+                  : 'Ensure your account uses a strong password.'}
+              </p>
             </div>
           </div>
 
@@ -381,24 +416,26 @@ export default function SettingsPage() {
           )}
 
           <form onSubmit={handleChangePassword}>
-            <div className="form-group">
-              <label className="form-label" htmlFor="currentPassword">
-                Current Password
-              </label>
-              <input
-                id="currentPassword"
-                type="password"
-                className="form-input"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                required
-              />
-            </div>
+            {!isGoogleLinked && (
+              <div className="form-group">
+                <label className="form-label" htmlFor="currentPassword">
+                  Current Password
+                </label>
+                <input
+                  id="currentPassword"
+                  type="password"
+                  className="form-input"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  required
+                />
+              </div>
+            )}
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div className="form-group">
                 <label className="form-label" htmlFor="newPassword">
-                  New Password
+                  {isGoogleLinked ? 'Create New Password' : 'New Password'}
                 </label>
                 <input
                   id="newPassword"
@@ -408,12 +445,13 @@ export default function SettingsPage() {
                   onChange={(e) => setNewPassword(e.target.value)}
                   required
                   minLength={6}
+                  placeholder="Min 6 characters"
                 />
               </div>
 
               <div className="form-group">
                 <label className="form-label" htmlFor="confirmNewPassword">
-                  Confirm New Password
+                  Confirm Password
                 </label>
                 <input
                   id="confirmNewPassword"
@@ -422,6 +460,7 @@ export default function SettingsPage() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
+                  placeholder="Repeat password"
                 />
               </div>
             </div>
@@ -432,7 +471,7 @@ export default function SettingsPage() {
               disabled={savingPassword}
               style={{ marginTop: '12px', padding: '10px 24px', fontSize: '0.9rem' }}
             >
-              {savingPassword ? 'Changing...' : 'CHANGE PASSWORD'}
+              {savingPassword ? 'Saving...' : isGoogleLinked ? 'SET ACCOUNT PASSWORD' : 'CHANGE PASSWORD'}
             </button>
           </form>
         </GlassPanel>

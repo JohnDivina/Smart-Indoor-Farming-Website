@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import GlassPanel from '@/components/ui/GlassPanel';
 import MonthlyAvgChart from '@/components/charts/MonthlyAvgChart';
+import AnimatedNumber from '@/components/motion/AnimatedNumber';
 import { FaSun, FaChartColumn, FaBolt } from 'react-icons/fa6';
 
 export default function LightInsightsPage() {
@@ -35,7 +36,7 @@ export default function LightInsightsPage() {
             <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 600 }}>Daily Light Integral (DLI)</span>
           </div>
           <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#F2A900' }}>
-            14.2 mol/m²/d
+            <AnimatedNumber value={14.2} decimals={1} suffix=" mol/m²/d" />
           </div>
           <span style={{ fontSize: '0.75rem', color: 'var(--accent-success)' }}>High efficiency photosynthetic uptake</span>
         </GlassPanel>
@@ -46,7 +47,7 @@ export default function LightInsightsPage() {
             <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 600 }}>Solar Energy Utilization</span>
           </div>
           <div style={{ fontSize: '2.2rem', fontWeight: 800, color: 'var(--accent-primary)' }}>
-            88.4%
+            <AnimatedNumber value={88.4} decimals={1} suffix="%" />
           </div>
           <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Panel &amp; sensor sync efficiency</span>
         </GlassPanel>

@@ -6,6 +6,7 @@ import GlassPanel from '@/components/ui/GlassPanel';
 import StatusBadge from '@/components/ui/StatusBadge';
 import ControlToggle from '@/components/ui/ControlToggle';
 import GuestBanner from '@/components/ui/GuestBanner';
+import AnimatedNumber from '@/components/motion/AnimatedNumber';
 import useControlStatus from '@/hooks/useControlStatus';
 import { useSession } from 'next-auth/react';
 import {
@@ -107,7 +108,7 @@ export default function SolarPanelPage() {
           </div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
             <span style={{ fontSize: '2.8rem', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1 }}>
-              {voltage.toFixed(1)}
+              <AnimatedNumber value={voltage} decimals={1} />
             </span>
             <span style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--text-secondary)' }}>V DC</span>
           </div>
@@ -122,7 +123,7 @@ export default function SolarPanelPage() {
           </div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
             <span style={{ fontSize: '2.8rem', fontWeight: 800, color: 'var(--accent-primary)', lineHeight: 1 }}>
-              {current.toFixed(2)}
+              <AnimatedNumber value={current} decimals={2} />
             </span>
             <span style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Amperes</span>
           </div>
@@ -137,7 +138,7 @@ export default function SolarPanelPage() {
           </div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
             <span style={{ fontSize: '2.8rem', fontWeight: 800, color: '#3b82f6', lineHeight: 1 }}>
-              {power.toFixed(1)}
+              <AnimatedNumber value={power} decimals={1} />
             </span>
             <span style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Watts</span>
           </div>

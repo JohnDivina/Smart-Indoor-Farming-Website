@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import GlassPanel from '@/components/ui/GlassPanel';
 import MonthlyAvgChart from '@/components/charts/MonthlyAvgChart';
+import AnimatedNumber from '@/components/motion/AnimatedNumber';
 import { FaChartColumn, FaTemperatureHalf, FaDroplet, FaLightbulb } from 'react-icons/fa6';
 
 export default function TempHumidityInsightsPage() {
@@ -20,6 +21,13 @@ export default function TempHumidityInsightsPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  const avgTemp = data.temperature?.length
+    ? data.temperature.reduce((a: number, b: number) => a + b, 0) / data.temperature.length
+    : 26.8;
+  const avgHumid = data.humidity?.length
+    ? data.humidity.reduce((a: number, b: number) => a + b, 0) / data.humidity.length
+    : 68.5;
+
   return (
     <>
       <Header
@@ -35,7 +43,7 @@ export default function TempHumidityInsightsPage() {
             <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 600 }}>Avg Seasonal Temp</span>
           </div>
           <div style={{ fontSize: '2.2rem', fontWeight: 800, color: 'var(--accent-primary)' }}>
-            26.8°C
+            <AnimatedNumber value={avgTemp} decimals={1} suffix="°C" />
           </div>
           <span style={{ fontSize: '0.75rem', color: 'var(--accent-success)' }}>± 1.4°C Micro-climate Variance</span>
         </GlassPanel>
@@ -46,7 +54,7 @@ export default function TempHumidityInsightsPage() {
             <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 600 }}>Avg Relative Humidity</span>
           </div>
           <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#3b82f6' }}>
-            68.5%
+            <AnimatedNumber value={avgHumid} decimals={1} suffix="%" />
           </div>
           <span style={{ fontSize: '0.75rem', color: 'var(--accent-success)' }}>Optimal Transpiration Zone</span>
         </GlassPanel>
@@ -57,9 +65,9 @@ export default function TempHumidityInsightsPage() {
             <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 600 }}>Vapor Pressure Deficit (VPD)</span>
           </div>
           <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#F2A900' }}>
-            1.05 kPa
+            <AnimatedNumber value={1.05} decimals={2} suffix=" kPa" />
           </div>
-          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Healthy stomatal opening</span>
+          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Healthy stomatal conductivity</span>
         </GlassPanel>
       </div>
 

@@ -106,7 +106,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           throw new Error(`UNVERIFIED_EMAIL:${user.id}:${encodeURIComponent(user.email)}`);
         }
 
-        // 5. Check 2FA / TOTP if enabled
+        // 5. Check Master Admin Approval (admin role bypasses, others must be approved)
+        const isAdmin = user.role === 'admin' || user.email.toLowerCase() === 'johnrey_divina@clsu.edu.ph';
+        if (!isAdmin && !user.approved) {
+          throw new Error('PENDING_APPROVAL');
+        }
+
+        // 6. Check 2FA / TOTP if enabled
         if (user.totpEnabled && user.totpSecret) {
           if (!totpCode) {
             throw new Error(`REQUIRE_2FA:${user.id}`);
@@ -117,7 +123,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           }
         }
 
-        // 6. Record user activity in active_users table
+        // 7. Record user activity in active_users table
         try {
           await prisma.activeUser.upsert({
             where: { userId: user.id },
@@ -142,6 +148,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           username: user.username,
           phonenumber: user.phonenumber || undefined,
           isGuest: false,
+          role: isAdmin ? 'admin' : (user.role || 'viewer'),
+          approved: isAdmin ? true : user.approved,
+          authProvider: user.authProvider || 'credentials',
         };
       },
     }),
@@ -151,6 +160,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (account?.provider === 'google') {
         if (!user.email) return false;
         try {
+          const emailLower = user.email.toLowerCase();
+          const isMasterAdminEmail = emailLower === 'johnrey_divina@clsu.edu.ph';
+
           // Find or create user in DB
           let dbUser = await prisma.user.findFirst({
             where: { email: { equals: user.email, mode: 'insensitive' } },
@@ -179,17 +191,33 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 password: randomPassword,
                 emailVerified: 1, // Pre-verified via Google
                 googleId: account.providerAccountId,
+                authProvider: 'google',
+                role: isMasterAdminEmail ? 'admin' : 'viewer',
+                approved: isMasterAdminEmail ? true : false,
               },
             });
+
+            // If not master admin, block immediate login until approved by master admin
+            if (!isMasterAdminEmail) {
+              return '/login?error=PENDING_APPROVAL';
+            }
           } else {
             // Link Google ID & ensure email_verified is 1
-            await prisma.user.update({
+            const shouldBeAdmin = dbUser.role === 'admin' || isMasterAdminEmail;
+            dbUser = await prisma.user.update({
               where: { id: dbUser.id },
               data: {
                 googleId: account.providerAccountId,
                 emailVerified: 1,
+                authProvider: dbUser.authProvider === 'credentials' ? 'credentials' : 'google',
+                ...(isMasterAdminEmail ? { role: 'admin', approved: true } : {}),
               },
             });
+
+            // Check if user is approved
+            if (!shouldBeAdmin && !dbUser.approved) {
+              return '/login?error=PENDING_APPROVAL';
+            }
           }
 
           // Record user activity
@@ -206,6 +234,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           (user as any).id = String(dbUser.id);
           (user as any).username = dbUser.username;
           (user as any).isGuest = false;
+          (user as any).role = dbUser.role;
+          (user as any).approved = dbUser.approved;
+          (user as any).authProvider = dbUser.authProvider;
 
           return true;
         } catch (err) {
@@ -221,18 +252,24 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.username = (user as any).username || user.name || token.username || '';
         token.phonenumber = (user as any).phonenumber;
         token.isGuest = (user as any).isGuest ?? false;
+        token.role = (user as any).role || token.role || 'viewer';
+        token.approved = (user as any).approved ?? token.approved ?? false;
+        token.authProvider = (user as any).authProvider || token.authProvider || 'credentials';
       }
-      if (token.email && (!token.id || isNaN(Number(token.id)))) {
+      if (token.email) {
         try {
           const dbUser = await prisma.user.findFirst({
             where: { email: { equals: token.email, mode: 'insensitive' } },
-            select: { id: true, username: true, phonenumber: true },
+            select: { id: true, username: true, phonenumber: true, role: true, approved: true, authProvider: true },
           });
           if (dbUser) {
             token.id = String(dbUser.id);
             token.username = dbUser.username;
             token.phonenumber = dbUser.phonenumber || undefined;
             token.isGuest = false;
+            token.role = dbUser.role;
+            token.approved = dbUser.approved;
+            token.authProvider = dbUser.authProvider;
           }
         } catch (e) {
           console.warn('JWT user lookup fallback error:', e);
@@ -246,6 +283,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.username = token.username as string;
         session.user.phonenumber = token.phonenumber as string;
         session.user.isGuest = (token.isGuest as boolean) ?? false;
+        session.user.role = (token.role as string) ?? 'viewer';
+        session.user.approved = (token.approved as boolean) ?? false;
+        session.user.authProvider = (token.authProvider as string) ?? 'credentials';
       }
       return session;
     },

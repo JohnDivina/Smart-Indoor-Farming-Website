@@ -75,6 +75,7 @@ export async function POST(req: NextRequest) {
       });
     } else {
       // Create new unverified user
+      const isMasterAdmin = email.toLowerCase() === 'johnrey_divina@clsu.edu.ph';
       const newUser = await prisma.user.create({
         data: {
           username,
@@ -82,6 +83,9 @@ export async function POST(req: NextRequest) {
           phonenumber,
           password: hashedPassword,
           emailVerified: 0,
+          role: isMasterAdmin ? 'admin' : 'viewer',
+          approved: isMasterAdmin ? true : false,
+          authProvider: 'credentials',
         },
       });
       targetUserId = newUser.id;

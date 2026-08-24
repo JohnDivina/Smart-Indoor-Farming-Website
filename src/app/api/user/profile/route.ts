@@ -19,6 +19,8 @@ export async function GET() {
         username: true,
         email: true,
         phonenumber: true,
+        role: true,
+        authProvider: true,
         totpEnabled: true,
         emailVerified: true,
         createdAt: true,

@@ -31,17 +31,25 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 });
     }
 
-    // Verify current password
-    let isValid = false;
-    if (user.password.startsWith('$2')) {
-      isValid = await bcrypt.compare(currentPassword, user.password);
-    } else {
-      const md5 = crypto.createHash('md5').update(currentPassword).digest('hex');
-      isValid = md5 === user.password;
-    }
+    const isOAuthUser = user.authProvider === 'google';
 
-    if (!isValid) {
-      return NextResponse.json({ success: false, message: 'Current password is incorrect.' }, { status: 400 });
+    // If user is credentials-based, enforce current password check
+    if (!isOAuthUser) {
+      if (!currentPassword) {
+        return NextResponse.json({ success: false, message: 'Current password is required.' }, { status: 400 });
+      }
+
+      let isValid = false;
+      if (user.password.startsWith('$2')) {
+        isValid = await bcrypt.compare(currentPassword, user.password);
+      } else {
+        const md5 = crypto.createHash('md5').update(currentPassword).digest('hex');
+        isValid = md5 === user.password;
+      }
+
+      if (!isValid) {
+        return NextResponse.json({ success: false, message: 'Current password is incorrect.' }, { status: 400 });
+      }
     }
 
     // Hash new password with bcrypt
@@ -54,7 +62,9 @@ export async function PUT(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: 'Password changed successfully.',
+      message: isOAuthUser
+        ? 'Account password established! You can now sign in using either Google or your email and password.'
+        : 'Password changed successfully.',
     });
   } catch (error: any) {
     console.error('Change Password Error:', error);

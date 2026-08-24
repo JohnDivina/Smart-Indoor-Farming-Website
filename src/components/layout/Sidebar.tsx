@@ -21,6 +21,10 @@ import {
   FaRightFromBracket,
   FaUser,
   FaUserClock,
+  FaUserShield,
+  FaCrown,
+  FaTractor,
+  FaEye,
 } from 'react-icons/fa6';
 
 interface SidebarProps {
@@ -35,7 +39,19 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const isGuest = session?.user?.isGuest ?? false;
-  const username = session?.user?.name || session?.user?.email?.split('@')[0] || (isGuest ? 'Guest User' : 'Admin');
+  const userRole = (session?.user?.role as string) || (isGuest ? 'guest' : 'viewer');
+  const isAdmin = userRole === 'admin';
+  const canControlHardware = isAdmin || userRole === 'farm_manager';
+
+  const username = session?.user?.name || session?.user?.username || session?.user?.email?.split('@')[0] || (isGuest ? 'Guest User' : 'Operator');
+
+  const getRoleLabel = () => {
+    if (isGuest) return 'Guest Mode';
+    if (userRole === 'admin') return '👑 Master Admin';
+    if (userRole === 'farm_manager') return '🛡️ Farm Manager';
+    if (userRole === 'farmer') return '🌾 Farmer';
+    return '👁️ Viewer';
+  };
 
   const navLinks = [
     {
@@ -73,21 +89,21 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
       label: 'Auxiliary Fan',
       href: '/controls/fan',
       icon: <FaFan />,
-      locked: isGuest,
+      locked: !canControlHardware,
     },
     {
       type: 'link',
       label: 'Fertigation',
       href: '/controls/fertigation',
       icon: <FaDroplet />,
-      locked: isGuest,
+      locked: !canControlHardware,
     },
     {
       type: 'link',
       label: 'Solar Panels',
       href: '/controls/solar',
       icon: <FaSolarPanel />,
-      locked: isGuest,
+      locked: !canControlHardware,
     },
     { type: 'section', label: 'System' },
     {
@@ -111,6 +127,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
       icon: <FaCircleInfo />,
       locked: false,
     },
+    ...(isAdmin
+      ? [
+          {
+            type: 'link',
+            label: 'Master Control',
+            href: '/master-control',
+            icon: <FaUserShield />,
+            locked: false,
+          },
+        ]
+      : []),
     {
       type: 'link',
       label: 'Settings',
@@ -122,7 +149,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
 
   const handleNavClick = (href: string, locked: boolean) => {
     if (locked) {
-      router.push('/dashboard?guest_restricted=1');
+      router.push('/dashboard?restricted=controls_only');
     } else {
       router.push(href);
     }
@@ -191,13 +218,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
         {/* User Profile */}
         <div className={styles.userSection}>
           <div className={`${styles.avatar} ${isGuest ? styles.avatarGuest : ''}`}>
-            {isGuest ? <FaUserClock /> : <FaUser />}
+            {isGuest ? <FaUserClock /> : userRole === 'admin' ? <FaCrown style={{ color: '#fbbf24' }} /> : <FaUser />}
           </div>
           <div className={styles.userInfo}>
             <div className={styles.userName}>{username}</div>
-            <div className={styles.userStatus}>
+            <div className={styles.userStatus} style={{ fontSize: '0.75rem', marginTop: '2px' }}>
               <span className={isGuest ? 'pulse-dot pulse-dot-danger' : 'pulse-dot'} />
-              <span>{isGuest ? 'Guest Mode' : 'Online'}</span>
+              <span style={{ fontWeight: 600 }}>{getRoleLabel()}</span>
             </div>
           </div>
           <button

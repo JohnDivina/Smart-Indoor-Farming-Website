@@ -15,6 +15,8 @@ function LoginFormContent() {
   const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
   const registered = searchParams.get('registered');
 
+  const errorParam = searchParams.get('error');
+
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -22,7 +24,11 @@ function LoginFormContent() {
   const [require2FA, setRequire2FA] = useState(false);
   const [loading, setLoading] = useState(false);
   const [guestLoading, setGuestLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(
+    errorParam === 'PENDING_APPROVAL'
+      ? 'Your account is registered but awaiting approval from the Master Administrator. Access will be granted once your role (Farm Manager, Farmer, or Viewer) is assigned.'
+      : null
+  );
   const [success, setSuccess] = useState<string | null>(
     registered ? 'Account verified successfully! Please sign in below.' : null
   );
@@ -47,6 +53,14 @@ function LoginFormContent() {
           const userId = parts[1];
           const email = decodeURIComponent(parts[2] || '');
           router.push(`/verify-otp?userId=${userId}&email=${encodeURIComponent(email)}&reason=account_creation`);
+          return;
+        }
+
+        if (res.error === 'PENDING_APPROVAL' || res.error.includes('PENDING_APPROVAL')) {
+          setError(
+            'Your account is currently pending approval by the Master Administrator. Access will be activated once your operator role has been assigned.'
+          );
+          setLoading(false);
           return;
         }
 
