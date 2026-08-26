@@ -239,6 +239,28 @@ p { color: var(--text-secondary); }
   }
 }
 
+/* Responsive Touch-Friendly Tables */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--border-radius-sm);
+}
+
+.table-responsive::-webkit-scrollbar {
+  height: 6px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: var(--glass-bg-subtle);
+  border-radius: 999px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: var(--glass-border-hover);
+  border-radius: 999px;
+}
+
 /* Guest Locked Card */
 .guest-locked-card {
   position: relative;

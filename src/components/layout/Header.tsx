@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import styles from './Header.module.css';
 import { useTheme } from '@/context/ThemeContext';
+import { useNav } from '@/context/NavContext';
 import { FaMoon, FaSun, FaBars, FaArrowLeft } from 'react-icons/fa6';
 import StatusBadge from '@/components/ui/StatusBadge';
 
@@ -29,6 +30,8 @@ export const Header: React.FC<HeaderProps> = ({
   children,
 }) => {
   const { theme, toggleTheme } = useTheme();
+  const nav = useNav();
+  const handleMobileToggle = onMobileMenuToggle || nav.toggleMobileNav;
 
   return (
     <header className={styles.header}>
@@ -81,17 +84,16 @@ export const Header: React.FC<HeaderProps> = ({
           {theme === 'light' ? <FaMoon /> : <FaSun style={{ color: '#F2A900' }} />}
         </button>
 
-        {/* Mobile Hamburger Toggle */}
-        {onMobileMenuToggle && (
-          <button
-            type="button"
-            className={styles.mobileMenuBtn}
-            onClick={onMobileMenuToggle}
-            aria-label="Open mobile menu"
-          >
-            <FaBars />
-          </button>
-        )}
+        {/* Mobile Hamburger Toggle (Always active on mobile/tablet <= 1024px) */}
+        <button
+          type="button"
+          className={styles.mobileMenuBtn}
+          onClick={handleMobileToggle}
+          aria-label="Open navigation menu"
+          title="Open Navigation Menu"
+        >
+          <FaBars />
+        </button>
       </div>
     </header>
   );

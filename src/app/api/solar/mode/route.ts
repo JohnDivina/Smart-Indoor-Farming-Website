@@ -6,8 +6,12 @@ import { solarModeSchema } from '@/lib/validators';
 export async function POST(req: NextRequest) {
   try {
     const session = await auth();
-    if (session?.user?.isGuest) {
-      return NextResponse.json({ success: false, message: 'Action disabled in guest mode' }, { status: 403 });
+    const userRole = session?.user?.role || (session?.user?.isGuest ? 'guest' : 'viewer');
+    if (userRole !== 'admin' && userRole !== 'farm_manager') {
+      return NextResponse.json(
+        { success: false, message: 'Access denied: Master Admin or Farm Manager permission required.' },
+        { status: 403 }
+      );
     }
 
     const body = await req.json();

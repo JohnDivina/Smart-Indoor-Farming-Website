@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Header from '@/components/layout/Header';
 import GlassPanel from '@/components/ui/GlassPanel';
 import Modal from '@/components/ui/Modal';
@@ -64,7 +64,7 @@ export default function MasterControlPage() {
     setTimeout(() => setToastMessage(null), 4000);
   };
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     setLoading(true);
     try {
       const res = await fetch('/api/admin/users');
@@ -79,11 +79,11 @@ export default function MasterControlPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [fetchUsers]);
 
   const pendingUsers = users.filter((u) => !u.approved && u.role !== 'admin');
   const approvedUsers = users.filter((u) => u.approved || u.role === 'admin');
